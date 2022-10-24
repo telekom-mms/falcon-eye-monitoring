@@ -1,0 +1,51 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4318
+        tls:
+          cert_file: /tmp/certs/server.crt
+          key_file:  /tmp/certs/server.key
+
+exporters:
+  jaeger:
+    endpoint: "fem_jaeger-collector:14250"
+    tls:
+      insecure: true
+  prometheus:
+    endpoint: "0.0.0.0:5317"
+    resource_to_telemetry_conversion:
+      enabled: true
+  loki:
+    endpoint: "http://fem_loki:3100/loki/api/v1/push"
+    format: json
+    labels:
+      attributes:
+        container_name: ""
+        source: ""
+      resource:
+        host.name: "hostname"
+        service.name: "servicename"
+
+processors:
+  batch:
+
+extensions:
+  health_check:
+
+service:
+  extensions: [health_check]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [jaeger]
+      processors: [batch]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [prometheus]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [loki]
+
