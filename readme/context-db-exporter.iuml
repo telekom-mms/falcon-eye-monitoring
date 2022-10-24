@@ -1,0 +1,30 @@
+@startuml
+
+left to right direction
+
+node "database-host" {
+  [Postgresql] - 5432
+  [MongoDB] - 27017
+}
+
+node "monitoring-host" {
+  package "exporter" {
+    [Postgresql Exporter] ..> 5432
+    [Postgresql Exporter] - PostgresqlHttp
+    [MongoDB Exporter] .> 27017
+    [MongoDB Exporter] - MongoDBHttp
+  }
+
+  package "metrics" {
+    [Prometheus] ..> PostgresqlHttp
+    [Prometheus] ..> MongoDBHttp
+    [Prometheus] - PrometheusHttp
+  }
+
+  package "grafana" {
+    [Grafana] - GrafanaUI
+    [Grafana] ..> PrometheusHttp
+  }
+}
+
+@enduml

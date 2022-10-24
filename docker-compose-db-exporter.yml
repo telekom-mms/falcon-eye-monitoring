@@ -1,0 +1,33 @@
+version: "3.8"
+
+networks:
+  fem_monitoring:
+
+services:
+  mongodb-exporter:
+    image: percona/mongodb_exporter:0.34
+    restart: unless-stopped
+    container_name: mongodb_exporter
+    ports:
+      - "29216:9216"
+    command: [
+        "--mongodb.uri=mongodb://{mongodb_username}:{mongodb_password}@{mongodb_hosts}/admin?ssl=true&sslInsecure=true",
+        "--mongodb.direct-connect=false",
+        "--collector.diagnosticdata=true",
+        "--collector.replicasetstatus=true",
+        "--collector.indexstats=true",
+        "--collector.collstats=true",
+        "--log.level=error",
+    ]
+    networks:
+      - fem_monitoring
+  postgresql-exporter:
+    image: prometheuscommunity/postgres-exporter:v0.11.1
+    restart: unless-stopped
+    container_name: postgresql_exporter
+    ports:
+      - "29187:9187"
+    environment:
+      DATA_SOURCE_NAME: "postgresql://{postgresql_username}:{postgresql_password}@{postgresql_hosts}/postgres?sslmode=require"
+    networks:
+      - fem_monitoring
