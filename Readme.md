@@ -22,7 +22,7 @@ You have to add the otel java agent as JVM parameter together with some configur
 
 The following diagram illustrates the container setup using Jaeger-Tracing using an Opensearch backend.
 
-![context-jaeger-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/ronnyfriedland/falcon-eye-monitoring/publish/readme/context-fem.iuml)
+![context-jaeger-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/T-Systems-MMS/falcon-eye-monitoring/publish/readme/context-fem.iuml)
 
 #### Interfaces
 
@@ -63,7 +63,7 @@ For now the following databases are supported:
 - Postgresql
 - MongoDB
 
-![context-db-exporter-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/ronnyfriedland/falcon-eye-monitoring/publish/readme/context-db-exporter.iuml)
+![context-db-exporter-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/T-Systems-MMS/falcon-eye-monitoring/publish/readme/context-db-exporter.iuml)
 
 #### Interfaces
 
