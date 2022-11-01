@@ -119,6 +119,9 @@ services:
       - "traefik.http.routers.grafana.entrypoints=https"
       - "traefik.http.routers.grafana.tls=true"
       - "traefik.http.routers.grafana.rule=Host(`fem_grafana`)"
+    volumes:
+      - $PWD/target/config/grafana-dashboard-templates:/var/lib/grafana-dashboard-templates
+      - $PWD/target/config/grafana-provisioning:/etc/grafana/provisioning
   fem_otel-collector:
     image: otel/opentelemetry-collector-contrib:0.61.0
     container_name: fem_otel-collector

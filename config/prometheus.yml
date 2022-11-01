@@ -8,7 +8,7 @@ scrape_configs:
       - targets: ['otel-collector:5317']
   - job_name: 'es'
     static_configs:
-      - targets: ['opensearch_exporter:9114']
+      - targets: ['fem_opensearch_exporter:9114']
   - job_name: 'mongodb'
     static_configs:
       - targets: ['mongodb_exporter:9216']
