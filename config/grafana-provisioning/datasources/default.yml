@@ -11,7 +11,7 @@ datasources:
   - name: Jaeger
     type: jaeger
     access: direct
-    url: http://fem_jaeger:16686
+    url: http://fem_jaeger-query:16686
     editable: true
   - name: Loki
     type: loki
