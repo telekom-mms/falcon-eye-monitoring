@@ -4,10 +4,10 @@ networks:
   fem_monitoring:
 
 services:
-  mongodb-exporter:
+  fem_mongodb-exporter:
     image: percona/mongodb_exporter:0.34
     restart: unless-stopped
-    container_name: mongodb_exporter
+    container_name: fem_mongodb_exporter
     ports:
       - "29216:9216"
     command: [
@@ -21,10 +21,10 @@ services:
     ]
     networks:
       - fem_monitoring
-  postgresql-exporter:
+  fem_postgresql-exporter:
     image: prometheuscommunity/postgres-exporter:v0.11.1
     restart: unless-stopped
-    container_name: postgresql_exporter
+    container_name: fem_postgresql_exporter
     ports:
       - "29187:9187"
     environment:

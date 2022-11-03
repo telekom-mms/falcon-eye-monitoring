@@ -5,13 +5,13 @@ global:
 scrape_configs:
   - job_name:       'otlp'
     static_configs:
-      - targets: ['otel-collector:5317']
+      - targets: ['fem_otel-collector:5317']
   - job_name: 'es'
     static_configs:
       - targets: ['fem_opensearch_exporter:9114']
   - job_name: 'mongodb'
     static_configs:
-      - targets: ['mongodb_exporter:9216']
+      - targets: ['fem_mongodb_exporter:9216']
   - job_name: 'postgresql'
     static_configs:
-      - targets: ['postgresql_exporter:9187']
+      - targets: ['fem_postgresql_exporter:9187']
