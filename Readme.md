@@ -117,4 +117,8 @@ For now the following databases are supported:
 #### Grafana
 
 * Metrics, traces and logs can be analyzed using Grafana
-  
+* Grafana is beeing provisioned with basic datasources:
+** Prometheus for metrics
+** Loki for logs
+** jaeger for traces
+* Grafana is beeing provisioned with basic dashboards
