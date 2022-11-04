@@ -2,41 +2,43 @@ SHELL := /bin/bash
 
 target:
 	@mkdir -p target
-	@cp docker-compose-db-exporter.yml target
 
-mongodb: target
+docker-fem-dbexporter: target
+	@cp docker-compose-fem-dbexporter.yml target
+
+mongodb: docker-fem-dbexporter
 	@echo "mongodb username: "; \
 	read USERNAME; \
-	sed -i "s/{mongodb_username}/$$USERNAME/" target/docker-compose-db-exporter.yml
+	sed -i "s/{mongodb_username}/$$USERNAME/" target/docker-compose-fem-dbexporter.yml
 
 	@echo "mongodb password: "; \
 	read -s PASSWORD; \
-	sed -i "s/{mongodb_password}/$$PASSWORD/" target/docker-compose-db-exporter.yml
+	sed -i "s/{mongodb_password}/$$PASSWORD/" target/docker-compose-fem-dbexporter.yml
 
 	@echo "mongodb host list (format: host:port[,host:port]): "; \
 	read HOSTS; \
-	sed -i "s/{mongodb_hosts}/$$HOSTS/" target/docker-compose-db-exporter.yml
+	sed -i "s/{mongodb_hosts}/$$HOSTS/" target/docker-compose-fem-dbexporter.yml
 
-postgresql: target
+postgresql: docker-fem-dbexporter
 	@echo "postgresql username: "; \
 	read USERNAME; \
-	sed -i "s/{postgresql_username}/$$USERNAME/" target/docker-compose-db-exporter.yml
+	sed -i "s/{postgresql_username}/$$USERNAME/" target/docker-compose-fem-dbexporter.yml
 
 	@echo "postgresql password: "; \
 	read -s PASSWORD; \
-	sed -i "s/{postgresql_password}/$$PASSWORD/" target/docker-compose-db-exporter.yml
+	sed -i "s/{postgresql_password}/$$PASSWORD/" target/docker-compose-fem-dbexporter.yml
 
 	@echo "postgresql host list (format: host:port[,host:port]): "; \
 	read HOSTS; \
-	sed -i "s/{postgresql_hosts}/$$HOSTS/" target/docker-compose-db-exporter.yml
+	sed -i "s/{postgresql_hosts}/$$HOSTS/" target/docker-compose-fem-dbexporter.yml
 
 exporter: mongodb postgresql
 
-start: target exporter
-	docker-compose --file target/docker-compose-db-exporter.yml up -d
+start: docker-fem-dbexporter
+	docker-compose --file target/docker-compose-fem-dbexporter.yml up -d
 
-stop:
-	docker-compose --file target/docker-compose-db-exporter.yml down
+stop: docker-fem-dbexporter
+	docker-compose --file target/docker-compose-fem-dbexporter.yml down
 
 clean:
 	@rm -rf target

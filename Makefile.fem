@@ -3,6 +3,8 @@ SHELL := /bin/bash
 target:
 	@mkdir -p target/certs
 	@mkdir -p target/config
+
+docker-fem: target
 	@cp docker-compose-fem.yml target
 
 config: target
@@ -13,10 +15,10 @@ certs: target
 	@openssl x509 -req -extfile <(printf "subjectAltName=DNS:monitoring-host,DNS:localhost,IP:127.0.0.1") -days 365 -in target/certs/server.csr -signkey target/certs/server.key -out target/certs/server.crt
 	@chmod 644 target/certs/server.key target/certs/server.crt
 
-start: config certs
+start: config certs docker-fem
 	docker-compose --file target/docker-compose-fem.yml up -d
 
-stop:
+stop: docker-fem
 	docker-compose --file target/docker-compose-fem.yml down
 
 clean:

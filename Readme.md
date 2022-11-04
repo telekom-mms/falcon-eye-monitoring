@@ -43,7 +43,7 @@ The following diagram illustrates the container setup using Jaeger-Tracing using
   **For production use your own certificates**
 - To prepare the configuration files, use `config` target.
 
-`make --file Makefile.fem clean config certs`
+`make --file Makefile.fem config certs`
 
 #### Start
 
@@ -74,7 +74,7 @@ For now the following databases are supported:
 | PostgresqlHttp | 29216 | Provides direct access to the postgresql exporter. Do not use in production. |
 | MongoDBHttp | 29187 | Provides direct access to the mongodb exporter. Do not use in production. |
 
-`make --file Makefile.db-exporter clean exporter`
+`make --file Makefile.db-exporter exporter`
 
 #### Start
 
