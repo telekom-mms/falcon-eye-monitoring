@@ -10,7 +10,6 @@ datasources:
     editable: true
   - name: Jaeger
     type: jaeger
-    access: direct
     url: http://fem_jaeger-query:16686
     editable: true
   - name: Loki
