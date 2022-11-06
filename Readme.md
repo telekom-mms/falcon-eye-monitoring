@@ -63,7 +63,7 @@ For now the following databases are supported:
 - Postgresql
 - MongoDB
 
-![context-db-exporter-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/T-Systems-MMS/falcon-eye-monitoring/main/readme/context-db-exporter.iuml)
+![context-db-exporter-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/T-Systems-MMS/falcon-eye-monitoring/main/readme/context-fem-dbexporter.iuml)
 
 #### Interfaces
 
