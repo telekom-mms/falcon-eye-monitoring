@@ -7,13 +7,23 @@ target:
 docker-fem: target
 	@cp docker-compose-fem.yml target
 
+docker-fem-demoapp: target
+	@cp -r demoapp target
+	@cp docker-compose-fem-demoapp.yml target
+
 config: target
 	@cp -r config target/
 
 certs: target
 	@openssl req -newkey rsa:4096 -nodes -keyout target/certs/server.key -subj "/C=DE/ST=Sachsen/L=Dresden/O=T-Systems MMS GmbH/CN=monitoring-host" -out target/certs/server.csr
-	@openssl x509 -req -extfile <(printf "subjectAltName=DNS:monitoring-host,DNS:localhost,IP:127.0.0.1") -days 365 -in target/certs/server.csr -signkey target/certs/server.key -out target/certs/server.crt
+	@openssl x509 -req -extfile <(printf "subjectAltName=DNS:fem_otel-collector,DNS:localhost,IP:127.0.0.1") -days 365 -in target/certs/server.csr -signkey target/certs/server.key -out target/certs/server.crt
 	@chmod 644 target/certs/server.key target/certs/server.crt
+
+demoapp_start: docker-fem-demoapp
+	docker-compose --file target/docker-compose-fem-demoapp.yml up -d
+
+demoapp_stop:
+	docker-compose --file target/docker-compose-fem-demoapp.yml down
 
 start: config certs docker-fem
 	docker-compose --file target/docker-compose-fem.yml up -d

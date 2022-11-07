@@ -1,0 +1,17 @@
+version: "3.8"
+
+networks:
+  fem_monitoring:
+
+services:
+  fem_demoapp:
+    build:
+      context: demoapp
+    restart: unless-stopped
+    container_name: fem_demoapp
+    ports:
+      - 38080:8080
+    networks:
+      - fem_monitoring
+    volumes:
+      - $PWD/target/certs:/tmp/certs:ro
