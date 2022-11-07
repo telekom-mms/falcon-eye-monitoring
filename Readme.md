@@ -25,7 +25,7 @@ you have to add the otel java agent as JVM parameter together with some configur
 
 `make --file Makefile.fem demoapp_start`
 
-To start the demo application you have to start F.E.M.
+To start the demo application you have to start F.E.M. before.
 
 #### Stop
 
