@@ -56,7 +56,7 @@ The following diagram illustrates the container setup using Jaeger-Tracing using
   **For production use your own certificates**
 - To prepare the configuration files, use `config` target.
 
-`make --file Makefile.fem clean config certs`
+`make --file Makefile.fem config certs`
 
 #### Start
 
@@ -76,7 +76,7 @@ For now the following databases are supported:
 - Postgresql
 - MongoDB
 
-![context-db-exporter-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/T-Systems-MMS/falcon-eye-monitoring/main/readme/context-db-exporter.iuml)
+![context-db-exporter-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/T-Systems-MMS/falcon-eye-monitoring/main/readme/context-fem-dbexporter.iuml)
 
 #### Interfaces
 
@@ -87,15 +87,15 @@ For now the following databases are supported:
 | PostgresqlHttp | 29216 | Provides direct access to the postgresql exporter. Do not use in production. |
 | MongoDBHttp | 29187 | Provides direct access to the mongodb exporter. Do not use in production. |
 
-`make --file Makefile.db-exporter clean exporter`
+`make --file Makefile.fem-dbexporter exporter`
 
 #### Start
 
-`make --file Makefile.db-exporter start`
+`make --file Makefile.fem-dbexporter start`
 
 #### Stop
 
-`make --file Makefile.db-exporter stop`
+`make --file Makefile.fem-dbexporter stop`
 
 ### Description
 

@@ -3,6 +3,8 @@ SHELL := /bin/bash
 target:
 	@mkdir -p target/certs
 	@mkdir -p target/config
+
+docker-fem: target
 	@cp docker-compose-fem.yml target
 
 docker-fem-demoapp: target
@@ -23,10 +25,10 @@ demoapp_start: docker-fem-demoapp
 demoapp_stop:
 	docker-compose --file target/docker-compose-fem-demoapp.yml down
 
-start: config certs
+start: config certs docker-fem
 	docker-compose --file target/docker-compose-fem.yml up -d
 
-stop:
+stop: docker-fem
 	docker-compose --file target/docker-compose-fem.yml down
 
 clean:
