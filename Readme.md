@@ -14,7 +14,7 @@ you have to add the otel java agent as JVM parameter together with some configur
 
 ```
 -javaagent:<path-to>/opentelemetry-javaagent.jar
--Dotel.exporter.otlp.endpoint=https://monitoring-host:4318 
+-Dotel.exporter.otlp.endpoint=https://<monitoring-host>:4318 
 -Dotel.exporter.otlp.certificate=<path-to>/server.crt 
 -Dotel.resource.attributes=service.name=<name-of-the-service> 
 -Dotel.metrics.exporter=otlp 
