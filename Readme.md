@@ -5,9 +5,12 @@ Like a falcon, everything in sight! F.E.M. brings it all together: logfile, trac
 
 ## Setup
 
-### Java Application
+### Demo Java Application (Petclinic)
 
-You have to add the otel java agent as JVM parameter together with some configuration:
+There is a simple petclinic demo application which can be used to test the F.E.M. setup.
+
+If you are using your own application, 
+you have to add the otel java agent as JVM parameter together with some configuration:
 
 ```
 -javaagent:<path-to>/opentelemetry-javaagent.jar
@@ -17,6 +20,16 @@ You have to add the otel java agent as JVM parameter together with some configur
 -Dotel.metrics.exporter=otlp 
 -Dotel.logs.exporter=otlp 
 ```
+
+#### Start
+
+`make --file Makefile.fem demoapp_start`
+
+To start the demo application you have to start F.E.M.
+
+#### Stop
+
+`make --file Makefile.fem demoapp_stop`
 
 ### F.E.M
 
