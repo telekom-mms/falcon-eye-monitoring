@@ -18,7 +18,7 @@ EXPOSE 8080
 CMD java \
 -javaagent:/usr/local/opentelemetry/opentelemetry-javaagent.jar \
 -Dotel.exporter.otlp.endpoint=https://fem_otel-collector:4318 \
--Dotel.exporter.otlp.certificate=/tmp/server.crt \
+-Dotel.exporter.otlp.certificate=/tmp/certs/server.crt \
 -Dotel.resource.attributes=service.name=demoapp \
 -Dotel.metrics.exporter=otlp \
 -Dotel.logs.exporter=otlp \
