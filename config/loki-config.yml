@@ -65,5 +65,9 @@ query_range:
 querier:
   max_concurrent: 2048
 
+chunk_store_config:
+  chunk_cache_config:
+    enable_fifocache: false
+
 analytics:
   reporting_enabled: false
