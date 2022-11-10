@@ -60,3 +60,6 @@ query_range:
 
 querier:
   max_concurrent: 2048
+
+analytics:
+  reporting_enabled: false
