@@ -11,7 +11,7 @@ volumes:
 
 services:
   fem_jaeger-collector:
-    image: jaegertracing/jaeger-collector:1.38
+    image: jaegertracing/jaeger-collector:1.39
     restart: unless-stopped
     container_name: fem_jaeger-collector
     environment:
@@ -28,7 +28,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_jaeger-query:
-    image: jaegertracing/jaeger-query:1.38
+    image: jaegertracing/jaeger-query:1.39
     restart: unless-stopped
     container_name: fem_jaeger-query
     ports:
@@ -81,7 +81,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_jaeger-es-cleaner:
-     image: jaegertracing/jaeger-es-index-cleaner:1.38
+     image: jaegertracing/jaeger-es-index-cleaner:1.39
      container_name: fem_opensearch-cleaner
      command: [
         "7",
@@ -92,7 +92,7 @@ services:
      depends_on:
       - fem_opensearch
   fem_prometheus:
-    image: prom/prometheus:v2.37.1
+    image: prom/prometheus:v2.40.1
     restart: unless-stopped
     container_name: fem_prometheus
     ports:
@@ -105,7 +105,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_grafana:
-    image: grafana/grafana:9.0.9
+    image: grafana/grafana:9.2.4
     restart: unless-stopped
     container_name: fem_grafana
     ports:
@@ -122,7 +122,7 @@ services:
       - "traefik.http.routers.grafana.tls=true"
       - "traefik.http.routers.grafana.rule=Host(`fem_grafana`)"
   fem_otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.61.0
+    image: otel/opentelemetry-collector-contrib:0.63.1
     container_name: fem_otel-collector
     command: ["--config=/etc/otel-collector-config.yml"]
     volumes:
@@ -144,7 +144,7 @@ services:
     networks:
       - fem_monitoring
   fem_traefik:
-    image: traefik:v2.9.1
+    image: traefik:v2.9.4
     restart: unless-stopped
     container_name: fem_traefik
     ports:
