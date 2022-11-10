@@ -5,11 +5,11 @@ target:
 	@mkdir -p target/config
 
 docker-fem: target
-	@cp docker-compose-fem.yml target
+	@cp -n docker-compose-fem.yml target
 
 docker-fem-demoapp: target
 	@cp -r demoapp target
-	@cp docker-compose-fem-demoapp.yml target
+	@cp -n docker-compose-fem-demoapp.yml target
 
 config: target
 	@cp -r config target/

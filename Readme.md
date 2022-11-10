@@ -87,7 +87,7 @@ For now the following databases are supported:
 | PostgresqlHttp | 29216 | Provides direct access to the postgresql exporter. Do not use in production. |
 | MongoDBHttp | 29187 | Provides direct access to the mongodb exporter. Do not use in production. |
 
-`make --file Makefile.fem-dbexporter exporter`
+`make --file Makefile.fem-dbexporter config`
 
 #### Start
 
