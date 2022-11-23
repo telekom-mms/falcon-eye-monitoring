@@ -29,7 +29,6 @@ schema_config:
 storage_config:
   boltdb:
     directory: /tmp/loki/index
-
   filesystem:
     directory: /tmp/loki/chunks
 
@@ -57,6 +56,18 @@ frontend:
 
 query_range:
   parallelise_shardable_queries: false
+  results_cache:
+    cache:
+      embedded_cache:
+        enabled: true
+        max_size_mb: 100
 
 querier:
   max_concurrent: 2048
+
+chunk_store_config:
+  chunk_cache_config:
+    enable_fifocache: false
+
+analytics:
+  reporting_enabled: false
