@@ -4,7 +4,7 @@ target:
 	@mkdir -p target
 
 docker-fem-dbexporter: target
-	@cp docker-compose-fem-dbexporter.yml target
+	@cp -n docker-compose-fem-dbexporter.yml target
 
 mongodb: docker-fem-dbexporter
 	@echo "mongodb username: "; \
@@ -32,7 +32,7 @@ postgresql: docker-fem-dbexporter
 	read HOSTS; \
 	sed -i "s/{postgresql_hosts}/$$HOSTS/" target/docker-compose-fem-dbexporter.yml
 
-exporter: mongodb postgresql
+config: mongodb postgresql
 
 start: docker-fem-dbexporter
 	docker-compose --file target/docker-compose-fem-dbexporter.yml up -d
