@@ -5,32 +5,6 @@ Like a falcon, everything in sight! F.E.M. brings it all together: logfile, trac
 
 ## Setup
 
-### Demo Java Application (Petclinic)
-
-There is a simple petclinic demo application which can be used to test the F.E.M. setup.
-
-If you are using your own application, 
-you have to add the otel java agent as JVM parameter together with some configuration:
-
-```
--javaagent:<path-to>/opentelemetry-javaagent.jar
--Dotel.exporter.otlp.endpoint=https://<monitoring-host>:4318 
--Dotel.exporter.otlp.certificate=<path-to>/server.crt 
--Dotel.resource.attributes=service.name=<name-of-the-service> 
--Dotel.metrics.exporter=otlp 
--Dotel.logs.exporter=otlp 
-```
-
-#### Start
-
-`make --file Makefile.fem demoapp_start`
-
-To start the demo application you have to start F.E.M. before.
-
-#### Stop
-
-`make --file Makefile.fem demoapp_stop`
-
 ### F.E.M
 
 The following diagram illustrates the container setup using Jaeger-Tracing using an Opensearch backend.
@@ -65,6 +39,33 @@ The following diagram illustrates the container setup using Jaeger-Tracing using
 #### Stop
 
 `make --file Makefile.fem stop`
+
+
+### Demo Java Application (Petclinic)
+
+There is a simple petclinic demo application which can be used to test the F.E.M. setup.
+
+If you are using your own application, 
+you have to add the otel java agent as JVM parameter together with some configuration:
+
+```
+-javaagent:<path-to>/opentelemetry-javaagent.jar
+-Dotel.exporter.otlp.endpoint=https://<monitoring-host>:4318 
+-Dotel.exporter.otlp.certificate=<path-to>/server.crt 
+-Dotel.resource.attributes=service.name=<name-of-the-service> 
+-Dotel.metrics.exporter=otlp 
+-Dotel.logs.exporter=otlp 
+```
+
+#### Start
+
+`make --file Makefile.fem demoapp_start`
+
+To start the demo application you have to start F.E.M. before.
+
+#### Stop
+
+`make --file Makefile.fem demoapp_stop`
 
 
 ### DB Exporters
@@ -136,4 +137,5 @@ For now the following databases are supported:
   * jaeger for traces
 * Grafana is beeing provisioned with basic dashboards
   * for the demoapp
-    ![context-grafana01](readme/grafana01.png)
+
+![context-grafana01](readme/grafana01.png)
