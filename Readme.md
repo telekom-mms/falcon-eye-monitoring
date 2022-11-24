@@ -108,7 +108,7 @@ For now the following shells are supported:
 - bash / sh
 - powershell
 
-![context-db-exporter-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/T-Systems-MMS/falcon-eye-monitoring/main/readme/context-fem-shellexporter.iuml)
+![context-shellexporter-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/T-Systems-MMS/falcon-eye-monitoring/main/readme/context-fem-shellexporter.iuml)
 
 #### Interfaces
 
