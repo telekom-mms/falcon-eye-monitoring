@@ -98,6 +98,31 @@ For now the following databases are supported:
 
 `make --file Makefile.fem-dbexporter stop`
 
+### Shell Exporter
+
+The shellexporter is an application written in go. It executes scripts and exports the results as an prometheus endpoint.
+The shellexporter can be used together with the F.E.M. setup. For detailed informations watch the project at:
+https://github.com/dodopizza/prometheus-shell-exporter
+
+For now the following shells are supported:
+- bash / sh
+- powershell
+
+#### Interfaces
+
+| external Interface | Port | Description |
+|---|---|---|
+| Prometheus Exporter Port | 9360 | Port for scraping metrics with prometheus  |
+
+#### Start
+
+`make --file Makefile.fem-shellexporter start`
+
+#### Stop
+
+`make --file Makefile.fem-shellexporter stop`
+
+
 ### Description
 
 #### Traces
@@ -117,7 +142,12 @@ For now the following databases are supported:
 ##### Database metrics
 
 * There are exporters for each database which are connected to the database using tls.
-* The exports provide metrics endpoint
+* Each dbexporter provides a metrics endpoint
+
+##### shellexporter metrics
+
+* The shellexporter exports metrics from shell scripts and provide a metrics endpoint for prometheus.
+
 
 #### Logs
 
