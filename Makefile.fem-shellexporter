@@ -5,7 +5,7 @@ target:
 
 docker-fem-shellexporter: target
 	@cp docker-compose-fem-shellexporter.yml target
-	@cp -r shellexporter target
+	@cp -rn shellexporter target
 
 start: docker-fem-shellexporter
 	docker-compose --file target/docker-compose-fem-shellexporter.yml up -d
