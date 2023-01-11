@@ -1,7 +1,7 @@
 @startuml
 left to right direction
 
-node "remote-unix-host" {
+node "remote-host" {
   [shellexporter] - 9360
 
 }
