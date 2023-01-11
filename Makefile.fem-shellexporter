@@ -15,4 +15,3 @@ stop: docker-fem-shellexporter
 
 clean:
 	@rm -rf target/shellexporter*
-	@rm -rf target/*shellexporter*
