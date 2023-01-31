@@ -9,6 +9,8 @@ services:
       context: shellexporter
     restart: unless-stopped
     container_name: fem_shellexporter
+    volumes:
+      - $PWD/target/shellexporter/metrics:/usr/local/shellexporter/metrics:ro
     ports:
       - 9360:9360
     networks:
