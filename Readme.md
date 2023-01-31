@@ -124,6 +124,14 @@ For now the following shells are supported:
 
 `make --file Makefile.fem-shellexporter stop`
 
+#### Scripts
+Place your scripts into the folder $pwd/shellexporter/metrics. There you can find the "bash_gauge.sh" example as well.
+The folder is read-only mounted to the container under /usr/local/shellexporter/metrics.
+
+#### Security
+Please notice that by design no encryption for transport and no authentication for the endpoint are implemented.
+So if you plan to use this in production, you should consider using a https-proxy for terminate the sessions, e.g. as a side container.
+
 
 ### Description
 
