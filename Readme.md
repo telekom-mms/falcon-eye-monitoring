@@ -98,6 +98,41 @@ For now the following databases are supported:
 
 `make --file Makefile.fem-dbexporter stop`
 
+### Shell Exporter
+
+The shellexporter is an application written in go. It executes scripts and exports the results as an prometheus endpoint.
+The shellexporter can be used together with the F.E.M. setup. For detailed informations watch the project at:
+https://github.com/dodopizza/prometheus-shell-exporter
+
+For now the following shells are supported:
+- bash / sh
+- powershell
+
+![context-shell-exporter-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/T-Systems-MMS/falcon-eye-monitoring/main/readme/context-fem-shellexporter.iuml)
+
+#### Interfaces
+
+| external Interface | Port | Description |
+|---|---|---|
+| Prometheus Exporter Port | 9360 | Port for scraping metrics with prometheus  |
+
+#### Start
+
+`make --file Makefile.fem-shellexporter start`
+
+#### Stop
+
+`make --file Makefile.fem-shellexporter stop`
+
+#### Scripts
+Place your scripts into the folder $pwd/shellexporter/metrics. There you can find the "bash_gauge.sh" example as well.
+The folder is read-only mounted to the container under /usr/local/shellexporter/metrics.
+
+#### Security
+Please notice that by design no encryption for transport and no authentication for the endpoint are implemented.
+So if you plan to use this in production, you should consider using a https-proxy for terminate the sessions, e.g. as a side container.
+
+
 ### Description
 
 #### Traces
@@ -117,7 +152,12 @@ For now the following databases are supported:
 ##### Database metrics
 
 * There are exporters for each database which are connected to the database using tls.
-* The exports provide metrics endpoint
+* Each dbexporter provides a metrics endpoint
+
+##### shellexporter metrics
+
+* The shellexporter exports metrics from shell scripts and provide a metrics endpoint for prometheus.
+
 
 #### Logs
 

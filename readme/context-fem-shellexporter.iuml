@@ -1,0 +1,20 @@
+@startuml
+left to right direction
+
+node "remote-host" {
+  [shellexporter] - 9360
+
+}
+
+node "monitoring-host" {
+  package "metrics" {
+    [Prometheus] ..> 9360
+    [Prometheus] - PrometheusHttp
+  }
+
+  package "grafana" {
+    [Grafana] - GrafanaUI
+    [Grafana] ..> PrometheusHttp
+  }
+}
+@enduml

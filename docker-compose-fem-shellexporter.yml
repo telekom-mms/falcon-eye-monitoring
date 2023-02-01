@@ -1,0 +1,17 @@
+version: "3.8"
+
+networks:
+  fem_monitoring:
+
+services:
+  fem_shellexporter:
+    build:
+      context: shellexporter
+    restart: unless-stopped
+    container_name: fem_shellexporter
+    volumes:
+      - $PWD/target/shellexporter/metrics:/usr/local/shellexporter/metrics:ro
+    ports:
+      - 9360:9360
+    networks:
+      - fem_monitoring
