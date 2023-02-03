@@ -21,13 +21,3 @@ services:
     ]
     networks:
       - fem_monitoring
-  fem_postgresql-exporter:
-    image: prometheuscommunity/postgres-exporter:v0.11.1
-    restart: unless-stopped
-    container_name: fem_postgresql_exporter
-    ports:
-      - "29187:9187"
-    environment:
-      DATA_SOURCE_NAME: "postgresql://{postgresql_username}:{postgresql_password}@{postgresql_hosts}/postgres?sslmode=require"
-    networks:
-      - fem_monitoring

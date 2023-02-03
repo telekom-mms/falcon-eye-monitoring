@@ -59,13 +59,13 @@ you have to add the otel java agent as JVM parameter together with some configur
 
 #### Start
 
-`make --file Makefile.fem demoapp_start`
+`make --file Makefile.fem-demoapp start`
 
 To start the demo application you have to start F.E.M. before.
 
 #### Stop
 
-`make --file Makefile.fem demoapp_stop`
+`make --file Makefile.fem-demoapp stop`
 
 
 ### DB Exporters
@@ -88,15 +88,18 @@ For now the following databases are supported:
 | PostgresqlHttp | 29216 | Provides direct access to the postgresql exporter. Do not use in production. |
 | MongoDBHttp | 29187 | Provides direct access to the mongodb exporter. Do not use in production. |
 
-`make --file Makefile.fem-dbexporter config`
+`make --file Makefile.fem-dbexporter config-mongodb`  
+`make --file Makefile.fem-dbexporter config-postgresql`
 
 #### Start
 
-`make --file Makefile.fem-dbexporter start`
+`make --file Makefile.fem-dbexporter start-mongodb`  
+`make --file Makefile.fem-dbexporter start-postgresql`
 
 #### Stop
 
-`make --file Makefile.fem-dbexporter stop`
+`make --file Makefile.fem-dbexporter stop-mongodb`  
+`make --file Makefile.fem-dbexporter stop-postgresql`
 
 ### Shell Exporter
 
