@@ -15,11 +15,11 @@ certs: target
 	@openssl x509 -req -extfile <(printf "subjectAltName=DNS:fem_otel-collector,DNS:localhost,IP:127.0.0.1") -days 365 -in target/fem/certs/server.csr -signkey target/fem/certs/server.key -out target/fem/certs/server.crt
 	@chmod 644 target/fem/certs/server.key target/fem/certs/server.crt
 
-start: config certs docker-fem
-	docker compose --file target/fem/docker-compose-fem.yml up -d
+start: config certs config docker-fem
+	docker-compose --file target/fem/docker-compose-fem.yml up -d
 
 stop: docker-fem
-	docker compose --file target/fem/docker-compose-fem.yml down
+	docker-compose --file target/fem/docker-compose-fem.yml down
 
 clean:
 	@rm -rf target/fem

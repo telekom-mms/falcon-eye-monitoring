@@ -48,6 +48,7 @@ services:
       - fem_opensearch
   fem_opensearch:
     image: opensearchproject/opensearch:2.3.0
+    restart: unless-stopped
     container_name: fem_opensearch
     environment:
       - cluster.name=fem-cluster
@@ -72,6 +73,7 @@ services:
       - fem_monitoring
   fem_opensearch_exporter:
     image: prometheuscommunity/elasticsearch-exporter:v1.5.0
+    restart: unless-stopped
     container_name: fem_opensearch_exporter
     command:
      - '--es.uri=http://fem_opensearch:9200'
@@ -81,15 +83,16 @@ services:
     depends_on:
       - fem_opensearch
   fem_jaeger-es-cleaner:
-     image: jaegertracing/jaeger-es-index-cleaner:1.39
-     container_name: fem_opensearch-cleaner
-     command: [
-        "7",
-        "http://fem_opensearch:9200"
+    image: jaegertracing/jaeger-es-index-cleaner:1.39
+    restart: unless-stopped
+    container_name: fem_opensearch-cleaner
+    command: [
+      "7",
+      "http://fem_opensearch:9200"
     ]
-     networks:
+    networks:
       - fem_monitoring
-     depends_on:
+    depends_on:
       - fem_opensearch
   fem_prometheus:
     image: prom/prometheus:v2.40.1
@@ -98,7 +101,7 @@ services:
     ports:
       - "29090:9090" #ui, notls
     volumes:
-      - $PWD/target/config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - $PWD/target/fem/config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - fem_prometheus_data:/prometheus
     networks:
       - fem_monitoring
@@ -112,8 +115,8 @@ services:
       - "23000:3000" #ui, notls
     volumes:
       - fem_grafana_data:/var/lib/grafana
-      - $PWD/target/config/grafana-dashboard-templates:/var/lib/grafana-dashboard-templates
-      - $PWD/target/config/grafana-provisioning:/etc/grafana/provisioning
+      - $PWD/target/fem/config/grafana-dashboard-templates:/var/lib/grafana-dashboard-templates
+      - $PWD/target/fem/config/grafana-provisioning:/etc/grafana/provisioning
     networks:
       - fem_monitoring
     labels:
@@ -126,8 +129,8 @@ services:
     container_name: fem_otel-collector
     command: ["--config=/etc/otel-collector-config.yml"]
     volumes:
-      - $PWD/target/config/otel-collector-fem-config.yml:/etc/otel-collector-config.yml:ro
-      - $PWD/target/certs:/tmp/certs:ro
+      - $PWD/target/fem/config/otel-collector-fem-config.yml:/etc/otel-collector-config.yml:ro
+      - $PWD/target/fem/certs:/tmp/certs:ro
     ports:
       - "24318:4318"  # grpc, tls
     networks:
@@ -137,7 +140,7 @@ services:
     container_name: fem_loki
     command: -config.file=/etc/loki/config.yml
     volumes:
-      - $PWD/target/config/loki-config.yml:/etc/loki/config.yml:ro
+      - $PWD/target/fem/config/loki-config.yml:/etc/loki/config.yml:ro
       - fem_loki_data:/tmp
     ports:
       - 23100:3100 #api, notls
@@ -154,7 +157,7 @@ services:
     networks:
       - fem_monitoring
     volumes:
-      - $PWD/target/config/traefik.yml:/etc/traefik/traefik.yml:ro
-      - $PWD/target/config/traefik-certs.yml:/etc/traefik/traefik-certs.yml:ro
-      - $PWD/target/certs:/etc/traefik/certs:ro
+      - $PWD/target/fem/config/traefik.yml:/etc/traefik/traefik.yml:ro
+      - $PWD/target/fem/config/traefik-certs.yml:/etc/traefik/traefik-certs.yml:ro
+      - $PWD/target/fem/certs:/etc/traefik/certs:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
