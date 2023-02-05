@@ -1,24 +1,22 @@
 SHELL := /bin/bash
 
-target:
+prepare-fem:
 	@mkdir -p target/fem/certs
 	@mkdir -p target/fem/config
-
-docker-fem: target
 	@cp -n fem/docker-compose-fem.yml target/fem
 
-config: target
+config: prepare-fem
 	@cp -r fem/config target/fem
 
-certs: target
+certs: prepare-fem
 	@openssl req -newkey rsa:4096 -nodes -keyout target/fem/certs/server.key -subj "/C=DE/ST=Sachsen/L=Dresden/O=T-Systems MMS GmbH/CN=monitoring-host" -out target/fem/certs/server.csr
 	@openssl x509 -req -extfile <(printf "subjectAltName=DNS:fem_otel-collector,DNS:localhost,IP:127.0.0.1") -days 365 -in target/fem/certs/server.csr -signkey target/fem/certs/server.key -out target/fem/certs/server.crt
 	@chmod 644 target/fem/certs/server.key target/fem/certs/server.crt
 
-start: config certs config docker-fem
+start: config certs
 	docker-compose --file target/fem/docker-compose-fem.yml up -d
 
-stop: docker-fem
+stop: prepare-fem
 	docker-compose --file target/fem/docker-compose-fem.yml down
 
 clean:

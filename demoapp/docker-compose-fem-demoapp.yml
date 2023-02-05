@@ -6,7 +6,7 @@ networks:
 services:
   fem_demoapp:
     build:
-      context: demoapp
+      context: .
     restart: unless-stopped
     container_name: fem_demoapp
     ports:

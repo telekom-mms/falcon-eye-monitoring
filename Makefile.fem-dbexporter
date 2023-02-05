@@ -1,15 +1,14 @@
 SHELL := /bin/bash
 
-target:
+prepare-fem-dbexporter-mongodb:
 	@mkdir -p target/dbexporter
-
-docker-fem-dbexporter-mongodb: target
 	@cp -n dbexporter/docker-compose-fem-dbexporter-mongodb.yml target/dbexporter
 
-docker-fem-dbexporter-postgresql: target
+prepare-fem-dbexporter-postgresql:
+	@mkdir -p target/dbexporter
 	@cp -n dbexporter/docker-compose-fem-dbexporter-postgresql.yml target/dbexporter
 
-config-mongodb: docker-fem-dbexporter-mongodb
+config-mongodb: prepare-fem-dbexporter-mongodb
 	@echo "mongodb username: "; \
 	read USERNAME; \
 	sed -i "s/{mongodb_username}/$$USERNAME/" target/dbexporter/docker-compose-fem-dbexporter-mongodb.yml
@@ -22,7 +21,7 @@ config-mongodb: docker-fem-dbexporter-mongodb
 	read HOSTS; \
 	sed -i "s/{mongodb_hosts}/$$HOSTS/" target/dbexporter/docker-compose-fem-dbexporter-mongodb.yml
 
-config-postgresql: docker-fem-dbexporter-postgresql
+config-postgresql: prepare-fem-dbexporter-postgresql
 	@echo "postgresql username: "; \
 	read USERNAME; \
 	sed -i "s/{postgresql_username}/$$USERNAME/" target/dbexporter/docker-compose-fem-dbexporter-postgresql.yml
@@ -35,19 +34,19 @@ config-postgresql: docker-fem-dbexporter-postgresql
 	read HOSTS; \
 	sed -i "s/{postgresql_hosts}/$$HOSTS/" target/dbexporter/docker-compose-fem-dbexporter-postgresql.yml
 
-start-mongodb: docker-fem-dbexporter-mongodb
+start-mongodb: prepare-fem-dbexporter-mongodb
 	@echo "Please ensure to call 'config-mongodb' before starting"
-	docker compose --file target/dbexporter/docker-compose-fem-dbexporter-mongodb.yml up -d
+	docker-compose --file target/dbexporter/docker-compose-fem-dbexporter-mongodb.yml up -d
 
-stop-mongodb: docker-fem-dbexporter-mongodb
-	docker compose --file target/dbexporter/docker-compose-fem-dbexporter-mongodb.yml down
+stop-mongodb: prepare-fem-dbexporter-mongodb
+	docker-compose --file target/dbexporter/docker-compose-fem-dbexporter-mongodb.yml down
 
-start-postgresql: docker-fem-dbexporter-postgresql
+start-postgresql: prepare-fem-dbexporter-postgresql
 	@echo "Please ensure to call 'config-postgresql' before starting"
-	docker compose --file target/dbexporter/docker-compose-fem-dbexporter-postgresql.yml up -d
+	docker-compose --file target/dbexporter/docker-compose-fem-dbexporter-postgresql.yml up -d
 
-stop-postgresql: docker-fem-dbexporter-postgresql
-	docker compose --file target/dbexporter/docker-compose-fem-dbexporter-postgresql.yml down
+stop-postgresql: prepare-fem-dbexporter-postgresql
+	docker-compose --file target/dbexporter/docker-compose-fem-dbexporter-postgresql.yml down
 
 clean:
 	@rm -rf target/dbexporter
