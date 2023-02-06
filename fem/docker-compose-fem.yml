@@ -77,14 +77,12 @@ services:
     container_name: fem_opensearch_exporter
     command:
      - '--es.uri=http://fem_opensearch:9200'
-    restart: unless-stopped
     networks:
       - fem_monitoring
     depends_on:
       - fem_opensearch
   fem_jaeger-es-cleaner:
     image: jaegertracing/jaeger-es-index-cleaner:1.39
-    restart: unless-stopped
     container_name: fem_opensearch-cleaner
     command: [
       "7",
@@ -126,6 +124,7 @@ services:
       - "traefik.http.routers.grafana.rule=Host(`fem_grafana`)"
   fem_otel-collector:
     image: otel/opentelemetry-collector-contrib:0.63.1
+    restart: unless-stopped
     container_name: fem_otel-collector
     command: ["--config=/etc/otel-collector-config.yml"]
     volumes:
@@ -137,6 +136,7 @@ services:
       - fem_monitoring
   fem_loki:
     image: grafana/loki:main
+    restart: unless-stopped
     container_name: fem_loki
     command: -config.file=/etc/loki/config.yml
     volumes:
