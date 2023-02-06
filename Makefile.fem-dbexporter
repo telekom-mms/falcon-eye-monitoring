@@ -2,11 +2,11 @@ SHELL := /bin/bash
 
 prepare-fem-dbexporter-mongodb:
 	@mkdir -p target/dbexporter
-	@cp -n dbexporter/docker-compose-fem-dbexporter-mongodb.yml target/dbexporter
+	@cp -rn dbexporter/docker-compose-fem-dbexporter-mongodb.yml target/dbexporter
 
 prepare-fem-dbexporter-postgresql:
 	@mkdir -p target/dbexporter
-	@cp -n dbexporter/docker-compose-fem-dbexporter-postgresql.yml target/dbexporter
+	@cp -rn dbexporter/docker-compose-fem-dbexporter-postgresql.yml target/dbexporter
 
 config-mongodb: prepare-fem-dbexporter-mongodb
 	@echo "mongodb username: "; \

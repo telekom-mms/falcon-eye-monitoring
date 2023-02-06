@@ -6,7 +6,8 @@ networks:
 services:
   fem_shellexporter:
     build:
-      context: shellexporter
+      context: .
+    image: fem_shellexporter
     restart: unless-stopped
     container_name: fem_shellexporter
     volumes:

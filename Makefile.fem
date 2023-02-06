@@ -6,7 +6,7 @@ prepare-fem:
 	@cp -n fem/docker-compose-fem.yml target/fem
 
 config: prepare-fem
-	@cp -r fem/config target/fem
+	@cp -rn fem/config target/fem
 
 certs: prepare-fem
 	@openssl req -newkey rsa:4096 -nodes -keyout target/fem/certs/server.key -subj "/C=DE/ST=Sachsen/L=Dresden/O=T-Systems MMS GmbH/CN=monitoring-host" -out target/fem/certs/server.csr
