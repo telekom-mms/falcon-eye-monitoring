@@ -1,6 +1,7 @@
 SHELL := /bin/bash
 
 prepare-fem-demoapp:
+	@mkdir -p target/demoapp
 	@cp -rn demoapp target/
 
 start: prepare-fem-demoapp
