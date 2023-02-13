@@ -17,10 +17,10 @@ certs: prepare-fem
 	@chmod 644 target/fem/certs/server.key target/fem/certs/server.crt
 
 start: config certs
-	docker compose --file target/fem/docker-compose-fem.yml up -d
+	docker-compose --file target/fem/docker-compose-fem.yml up -d
 
 stop: prepare-fem
-	docker compose --file target/fem/docker-compose-fem.yml down
+	docker-compose --file target/fem/docker-compose-fem.yml down
 
 clean:
 	@rm -rf target/fem
