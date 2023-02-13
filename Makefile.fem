@@ -2,11 +2,14 @@ SHELL := /bin/bash
 
 prepare-fem:
 	@mkdir -p target/fem/certs
+	@chmod 755 target/fem/certs
 	@mkdir -p target/fem/config
+	@chmod 755 target/fem/config
 	@cp -n fem/docker-compose-fem.yml target/fem
 
 config: prepare-fem
 	@cp -rn fem/config target/fem
+	@chmod 644 target/fem/config/*.yml
 
 certs: prepare-fem
 	@openssl req -newkey rsa:4096 -nodes -keyout target/fem/certs/server.key -subj "/C=DE/ST=Sachsen/L=Dresden/O=T-Systems MMS GmbH/CN=monitoring-host" -out target/fem/certs/server.csr
@@ -14,10 +17,10 @@ certs: prepare-fem
 	@chmod 644 target/fem/certs/server.key target/fem/certs/server.crt
 
 start: config certs
-	docker-compose --file target/fem/docker-compose-fem.yml up -d
+	docker compose --file target/fem/docker-compose-fem.yml up -d
 
 stop: prepare-fem
-	docker-compose --file target/fem/docker-compose-fem.yml down
+	docker compose --file target/fem/docker-compose-fem.yml down
 
 clean:
 	@rm -rf target/fem
