@@ -3,6 +3,14 @@
 # F.E.M. : Falcon Eye Monitoring
 Like a falcon, everything in sight! F.E.M. brings it all together: logfile, traces, metrics.
 
+[F.E.M](#fem)  
+- [Demo application](#demo-java-application-petclinic)  
+- [DB Exporters](#db-exporters)  
+- [Shell Exporter](#shell-exporter)  
+
+[Known bugs and problems](Knownbugs.md)  
+
+
 ## Setup
 
 ### F.E.M
