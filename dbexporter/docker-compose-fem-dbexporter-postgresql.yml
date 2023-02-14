@@ -1,7 +1,7 @@
 version: "3.8"
 
 networks:
-  fem_monitoring:
+  monitoring:
 
 services:
   fem_postgresql-exporter:
@@ -13,4 +13,4 @@ services:
     environment:
       DATA_SOURCE_NAME: "postgresql://{postgresql_username}:{postgresql_password}@{postgresql_hosts}/postgres?sslmode=require"
     networks:
-      - fem_monitoring
+      - monitoring

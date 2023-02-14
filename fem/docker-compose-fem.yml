@@ -1,7 +1,7 @@
 version: "3.8"
 
 networks:
-  fem_monitoring:
+  monitoring:
 
 volumes:
   fem_grafana_data:
@@ -24,7 +24,7 @@ services:
         "--log-level=info"
     ]
     networks:
-      - fem_monitoring
+      - monitoring
     depends_on:
       - fem_opensearch
   fem_jaeger-query:
@@ -43,7 +43,7 @@ services:
         "--log-level=info"
     ]
     networks:
-      - fem_monitoring
+      - monitoring
     depends_on:
       - fem_opensearch
   fem_opensearch:
@@ -70,7 +70,7 @@ services:
     volumes:
       - fem_opensearch_data:/usr/share/opensearch/data
     networks:
-      - fem_monitoring
+      - monitoring
   fem_opensearch_exporter:
     image: prometheuscommunity/elasticsearch-exporter:v1.5.0
     restart: unless-stopped
@@ -78,7 +78,7 @@ services:
     command:
      - '--es.uri=http://fem_opensearch:9200'
     networks:
-      - fem_monitoring
+      - monitoring
     depends_on:
       - fem_opensearch
   fem_jaeger-es-cleaner:
@@ -89,7 +89,7 @@ services:
       "http://fem_opensearch:9200"
     ]
     networks:
-      - fem_monitoring
+      - monitoring
     depends_on:
       - fem_opensearch
   fem_prometheus:
@@ -102,7 +102,7 @@ services:
       - $PWD/target/fem/config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - fem_prometheus_data:/prometheus
     networks:
-      - fem_monitoring
+      - monitoring
     depends_on:
       - fem_opensearch
   fem_grafana:
@@ -116,7 +116,7 @@ services:
       - $PWD/target/fem/config/grafana-dashboard-templates:/var/lib/grafana-dashboard-templates
       - $PWD/target/fem/config/grafana-provisioning:/etc/grafana/provisioning
     networks:
-      - fem_monitoring
+      - monitoring
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.grafana.entrypoints=https"
@@ -133,7 +133,7 @@ services:
     ports:
       - "24318:4318"  # grpc, tls
     networks:
-      - fem_monitoring
+      - monitoring
   fem_loki:
     image: grafana/loki:main
     restart: unless-stopped
@@ -145,7 +145,7 @@ services:
     ports:
       - 23100:3100 #api, notls
     networks:
-      - fem_monitoring
+      - monitoring
   fem_traefik:
     image: traefik:v2.9.6
     restart: unless-stopped
@@ -155,7 +155,7 @@ services:
       - "20443:443"
       - "28080:8080"
     networks:
-      - fem_monitoring
+      - monitoring
     volumes:
       - $PWD/target/fem/config/traefik.yml:/etc/traefik/traefik.yml:ro
       - $PWD/target/fem/config/traefik-certs.yml:/etc/traefik/traefik-certs.yml:ro

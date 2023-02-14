@@ -1,7 +1,7 @@
 version: "3.8"
 
 networks:
-  fem_monitoring:
+  monitoring:
 
 services:
   fem_demoapp:
@@ -13,6 +13,6 @@ services:
     ports:
       - 38080:8080
     networks:
-      - fem_monitoring
+      - monitoring
     volumes:
       - $PWD/target/certs:/tmp/certs:ro

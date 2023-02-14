@@ -1,7 +1,7 @@
 version: "3.8"
 
 networks:
-  fem_monitoring:
+  monitoring:
 
 services:
   fem_shellexporter:
@@ -15,4 +15,4 @@ services:
     ports:
       - 9360:9360
     networks:
-      - fem_monitoring
+      - monitoring

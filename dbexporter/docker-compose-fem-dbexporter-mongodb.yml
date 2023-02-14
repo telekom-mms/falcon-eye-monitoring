@@ -1,7 +1,7 @@
 version: "3.8"
 
 networks:
-  fem_monitoring:
+  monitoring:
 
 services:
   fem_mongodb-exporter:
@@ -20,4 +20,4 @@ services:
         "--log.level=error",
     ]
     networks:
-      - fem_monitoring
+      - monitoring
