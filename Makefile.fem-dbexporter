@@ -36,10 +36,10 @@ config-postgresql: prepare-fem-dbexporter-postgresql
 
 start-mongodb: prepare-fem-dbexporter-mongodb
 	@echo "Please ensure to call 'config-mongodb' before starting"
-	docker-compose --file target/dbexporter/docker-compose-fem-dbexporter-mongodb.yml up -d
+	docker-compose --file target/dbexporter/docker-compose-fem-dbexporter-mongodb.yml --project-name fem up -d
 
 stop-mongodb: prepare-fem-dbexporter-mongodb
-	docker-compose --file target/dbexporter/docker-compose-fem-dbexporter-mongodb.yml down
+	docker-compose --file target/dbexporter/docker-compose-fem-dbexporter-mongodb.yml --project-name fem down
 
 start-postgresql: prepare-fem-dbexporter-postgresql
 	@echo "Please ensure to call 'config-postgresql' before starting"
