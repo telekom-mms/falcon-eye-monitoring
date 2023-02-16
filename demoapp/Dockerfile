@@ -1,8 +1,6 @@
 FROM maven:3.8.6
 
-MAINTAINER T-Systems MMS
-
-ENV OTEL_VERSION=1.19.2
+ENV OTEL_VERSION=1.22.1
 
 WORKDIR /usr/local/opentelemetry
 

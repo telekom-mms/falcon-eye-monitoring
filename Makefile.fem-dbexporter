@@ -1,44 +1,52 @@
 SHELL := /bin/bash
 
-target:
-	@mkdir -p target
+prepare-fem-dbexporter-mongodb:
+	@mkdir -p target/dbexporter
+	@cp -rn dbexporter/docker-compose-fem-dbexporter-mongodb.yml target/dbexporter
 
-docker-fem-dbexporter: target
-	@cp -n docker-compose-fem-dbexporter.yml target
+prepare-fem-dbexporter-postgresql:
+	@mkdir -p target/dbexporter
+	@cp -rn dbexporter/docker-compose-fem-dbexporter-postgresql.yml target/dbexporter
 
-mongodb: docker-fem-dbexporter
+config-mongodb: prepare-fem-dbexporter-mongodb
 	@echo "mongodb username: "; \
 	read USERNAME; \
-	sed -i "s/{mongodb_username}/$$USERNAME/" target/docker-compose-fem-dbexporter.yml
+	sed -i "s/{mongodb_username}/$$USERNAME/" target/dbexporter/docker-compose-fem-dbexporter-mongodb.yml
 
 	@echo "mongodb password: "; \
 	read -s PASSWORD; \
-	sed -i "s/{mongodb_password}/$$PASSWORD/" target/docker-compose-fem-dbexporter.yml
+	sed -i "s/{mongodb_password}/$$PASSWORD/" target/dbexporter/docker-compose-fem-dbexporter-mongodb.yml
 
 	@echo "mongodb host list (format: host:port[,host:port]): "; \
 	read HOSTS; \
-	sed -i "s/{mongodb_hosts}/$$HOSTS/" target/docker-compose-fem-dbexporter.yml
+	sed -i "s/{mongodb_hosts}/$$HOSTS/" target/dbexporter/docker-compose-fem-dbexporter-mongodb.yml
 
-postgresql: docker-fem-dbexporter
+config-postgresql: prepare-fem-dbexporter-postgresql
 	@echo "postgresql username: "; \
 	read USERNAME; \
-	sed -i "s/{postgresql_username}/$$USERNAME/" target/docker-compose-fem-dbexporter.yml
+	sed -i "s/{postgresql_username}/$$USERNAME/" target/dbexporter/docker-compose-fem-dbexporter-postgresql.yml
 
 	@echo "postgresql password: "; \
 	read -s PASSWORD; \
-	sed -i "s/{postgresql_password}/$$PASSWORD/" target/docker-compose-fem-dbexporter.yml
+	sed -i "s/{postgresql_password}/$$PASSWORD/" target/dbexporter/docker-compose-fem-dbexporter-postgresql.yml
 
 	@echo "postgresql host list (format: host:port[,host:port]): "; \
 	read HOSTS; \
-	sed -i "s/{postgresql_hosts}/$$HOSTS/" target/docker-compose-fem-dbexporter.yml
+	sed -i "s/{postgresql_hosts}/$$HOSTS/" target/dbexporter/docker-compose-fem-dbexporter-postgresql.yml
 
-config: mongodb postgresql
+start-mongodb: prepare-fem-dbexporter-mongodb
+	@echo "Please ensure to call 'config-mongodb' before starting"
+	docker-compose --file target/dbexporter/docker-compose-fem-dbexporter-mongodb.yml --project-name fem up -d
 
-start: docker-fem-dbexporter
-	docker-compose --file target/docker-compose-fem-dbexporter.yml up -d
+stop-mongodb: prepare-fem-dbexporter-mongodb
+	docker-compose --file target/dbexporter/docker-compose-fem-dbexporter-mongodb.yml --project-name fem down
 
-stop: docker-fem-dbexporter
-	docker-compose --file target/docker-compose-fem-dbexporter.yml down
+start-postgresql: prepare-fem-dbexporter-postgresql
+	@echo "Please ensure to call 'config-postgresql' before starting"
+	docker-compose --file target/dbexporter/docker-compose-fem-dbexporter-postgresql.yml --project-name fem up -d
+
+stop-postgresql: prepare-fem-dbexporter-postgresql
+	docker-compose --file target/dbexporter/docker-compose-fem-dbexporter-postgresql.yml --project-name fem down
 
 clean:
-	@rm -rf target
+	@rm -rf target/dbexporter

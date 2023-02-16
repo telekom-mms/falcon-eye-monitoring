@@ -1,35 +1,26 @@
 SHELL := /bin/bash
 
-target:
-	@mkdir -p target/certs
-	@mkdir -p target/config
+prepare-fem:
+	@mkdir -p target/fem/certs
+	@chmod 755 target/fem/certs
+	@mkdir -p target/fem/config
+	@chmod 755 target/fem/config
+	@cp -n fem/docker-compose-fem.yml target/fem
 
-docker-fem: target
-	@cp -n docker-compose-fem.yml target
+config: prepare-fem
+	@cp -rn fem/config target/fem
+	@chmod 644 target/fem/config/*.yml
 
-docker-fem-demoapp: target
-	@cp -r demoapp target
-	@cp -n docker-compose-fem-demoapp.yml target
+certs: prepare-fem
+	@openssl req -newkey rsa:4096 -nodes -keyout target/fem/certs/server.key -subj "/C=DE/ST=Sachsen/L=Dresden/O=T-Systems MMS GmbH/CN=monitoring-host" -out target/fem/certs/server.csr
+	@openssl x509 -req -extfile <(printf "subjectAltName=DNS:fem_otel-collector,DNS:localhost,IP:127.0.0.1") -days 365 -in target/fem/certs/server.csr -signkey target/fem/certs/server.key -out target/fem/certs/server.crt
+	@chmod 644 target/fem/certs/server.key target/fem/certs/server.crt
 
-config: target
-	@cp -r config target/
+start: config certs
+	docker-compose --file target/fem/docker-compose-fem.yml --project-name fem up -d
 
-certs: target
-	@openssl req -newkey rsa:4096 -nodes -keyout target/certs/server.key -subj "/C=DE/ST=Sachsen/L=Dresden/O=T-Systems MMS GmbH/CN=monitoring-host" -out target/certs/server.csr
-	@openssl x509 -req -extfile <(printf "subjectAltName=DNS:fem_otel-collector,DNS:localhost,IP:127.0.0.1") -days 365 -in target/certs/server.csr -signkey target/certs/server.key -out target/certs/server.crt
-	@chmod 644 target/certs/server.key target/certs/server.crt
-
-demoapp_start: docker-fem-demoapp
-	docker-compose --file target/docker-compose-fem-demoapp.yml up -d
-
-demoapp_stop:
-	docker-compose --file target/docker-compose-fem-demoapp.yml down
-
-start: config certs docker-fem
-	docker-compose --file target/docker-compose-fem.yml up -d
-
-stop: docker-fem
-	docker-compose --file target/docker-compose-fem.yml down
+stop: prepare-fem
+	docker-compose --file target/fem/docker-compose-fem.yml --project-name fem down
 
 clean:
-	@rm -rf target
+	@rm -rf target/fem

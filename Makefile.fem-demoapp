@@ -1,0 +1,14 @@
+SHELL := /bin/bash
+
+prepare-fem-demoapp:
+	@mkdir -p target/demoapp
+	@cp -rn demoapp target/
+
+start: prepare-fem-demoapp
+	docker-compose --file target/demoapp/docker-compose-fem-demoapp.yml --project-name fem up -d
+
+stop: prepare-fem-demoapp
+	docker-compose --file target/demoapp/docker-compose-fem-demoapp.yml --project-name fem down
+
+clean:
+	@rm -rf target/demoapp

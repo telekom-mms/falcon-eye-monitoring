@@ -1,17 +1,14 @@
 SHELL := /bin/bash
 
-target:
-	@mkdir -p target
-
-docker-fem-shellexporter: target
-	@cp docker-compose-fem-shellexporter.yml target
+prepare-fem-shellexporter:
+	@mkdir -p target/shellexporter
 	@cp -rn shellexporter target
 
-start: docker-fem-shellexporter
-	docker-compose --file target/docker-compose-fem-shellexporter.yml up -d
+start: prepare-fem-shellexporter
+	docker-compose --file target/shellexporter/docker-compose-fem-shellexporter.yml --project-name fem up -d
 
-stop: docker-fem-shellexporter
-	docker-compose --file target/docker-compose-fem-shellexporter.yml down
+stop: prepare-fem-shellexporter
+	docker-compose --file target/shellexporter/docker-compose-fem-shellexporter.yml --project-name fem down
 
 clean:
-	@rm -rf target/shellexporter*
+	@rm -rf target/shellexporter

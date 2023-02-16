@@ -1,12 +1,13 @@
 version: "3.8"
 
 networks:
-  fem_monitoring:
+  monitoring:
 
 services:
   fem_shellexporter:
     build:
-      context: shellexporter
+      context: .
+    image: fem_shellexporter
     restart: unless-stopped
     container_name: fem_shellexporter
     volumes:
@@ -14,4 +15,4 @@ services:
     ports:
       - 9360:9360
     networks:
-      - fem_monitoring
+      - monitoring

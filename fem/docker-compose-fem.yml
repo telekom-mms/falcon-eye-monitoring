@@ -1,7 +1,7 @@
 version: "3.8"
 
 networks:
-  fem_monitoring:
+  monitoring:
 
 volumes:
   fem_grafana_data:
@@ -11,7 +11,7 @@ volumes:
 
 services:
   fem_jaeger-collector:
-    image: jaegertracing/jaeger-collector:1.39
+    image: jaegertracing/jaeger-collector:1.42
     restart: unless-stopped
     container_name: fem_jaeger-collector
     environment:
@@ -24,11 +24,11 @@ services:
         "--log-level=info"
     ]
     networks:
-      - fem_monitoring
+      - monitoring
     depends_on:
       - fem_opensearch
   fem_jaeger-query:
-    image: jaegertracing/jaeger-query:1.39
+    image: jaegertracing/jaeger-query:1.42
     restart: unless-stopped
     container_name: fem_jaeger-query
     ports:
@@ -43,11 +43,11 @@ services:
         "--log-level=info"
     ]
     networks:
-      - fem_monitoring
+      - monitoring
     depends_on:
       - fem_opensearch
   fem_opensearch:
-    image: opensearchproject/opensearch:2.3.0
+    image: opensearchproject/opensearch:2.5.0
     restart: unless-stopped
     container_name: fem_opensearch
     environment:
@@ -70,85 +70,84 @@ services:
     volumes:
       - fem_opensearch_data:/usr/share/opensearch/data
     networks:
-      - fem_monitoring
+      - monitoring
   fem_opensearch_exporter:
     image: prometheuscommunity/elasticsearch-exporter:v1.5.0
     restart: unless-stopped
     container_name: fem_opensearch_exporter
     command:
      - '--es.uri=http://fem_opensearch:9200'
-    restart: unless-stopped
     networks:
-      - fem_monitoring
+      - monitoring
     depends_on:
       - fem_opensearch
   fem_jaeger-es-cleaner:
-    image: jaegertracing/jaeger-es-index-cleaner:1.39
+    image: jaegertracing/jaeger-es-index-cleaner:1.42
     container_name: fem_opensearch-cleaner
     command: [
       "7",
       "http://fem_opensearch:9200"
     ]
     networks:
-    - fem_monitoring
+      - monitoring
     depends_on:
-    - fem_opensearch
+      - fem_opensearch
   fem_prometheus:
-    image: prom/prometheus:v2.40.1
+    image: prom/prometheus:v2.42.0
     restart: unless-stopped
     container_name: fem_prometheus
     ports:
       - "29090:9090" #ui, notls
     volumes:
-      - $PWD/target/config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - $PWD/target/fem/config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - fem_prometheus_data:/prometheus
     networks:
-      - fem_monitoring
+      - monitoring
     depends_on:
       - fem_opensearch
   fem_grafana:
-    image: grafana/grafana:9.2.4
+    image: grafana/grafana:9.3.6
     restart: unless-stopped
     container_name: fem_grafana
     ports:
       - "23000:3000" #ui, notls
     volumes:
       - fem_grafana_data:/var/lib/grafana
-      - $PWD/target/config/grafana-dashboard-templates:/var/lib/grafana-dashboard-templates
-      - $PWD/target/config/grafana-provisioning:/etc/grafana/provisioning
+      - $PWD/target/fem/config/grafana-dashboard-templates:/var/lib/grafana-dashboard-templates
+      - $PWD/target/fem/config/grafana-provisioning:/etc/grafana/provisioning
     networks:
-      - fem_monitoring
+      - monitoring
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.grafana.entrypoints=https"
       - "traefik.http.routers.grafana.tls=true"
       - "traefik.http.routers.grafana.rule=Host(`fem_grafana`)"
   fem_otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.63.1
+    image: otel/opentelemetry-collector-contrib:0.71.0
     restart: unless-stopped
     container_name: fem_otel-collector
     command: ["--config=/etc/otel-collector-config.yml"]
     volumes:
-      - $PWD/target/config/otel-collector-fem-config.yml:/etc/otel-collector-config.yml:ro
-      - $PWD/target/certs:/tmp/certs:ro
+      - $PWD/target/fem/config/otel-collector-fem-config.yml:/etc/otel-collector-config.yml:ro
+      - $PWD/target/fem/certs:/tmp/certs:ro
     ports:
       - "24318:4318"  # grpc, tls
     networks:
-      - fem_monitoring
+      - monitoring
   fem_loki:
     image: grafana/loki:main
     restart: unless-stopped
     container_name: fem_loki
     command: -config.file=/etc/loki/config.yml
     volumes:
-      - $PWD/target/config/loki-config.yml:/etc/loki/config.yml:ro
+      - $PWD/target/fem/config/loki-config.yml:/etc/loki/config.yml:ro
       - fem_loki_data:/tmp
     ports:
       - 23100:3100 #api, notls
     networks:
-      - fem_monitoring
+      - monitoring
   fem_traefik:
-    image: traefik:v2.9.4
+    image: traefik:v2.9.6
     restart: unless-stopped
     container_name: fem_traefik
     ports:
@@ -156,9 +155,9 @@ services:
       - "20443:443"
       - "28080:8080"
     networks:
-      - fem_monitoring
+      - monitoring
     volumes:
-      - $PWD/target/config/traefik.yml:/etc/traefik/traefik.yml:ro
-      - $PWD/target/config/traefik-certs.yml:/etc/traefik/traefik-certs.yml:ro
-      - $PWD/target/certs:/etc/traefik/certs:ro
+      - $PWD/target/fem/config/traefik.yml:/etc/traefik/traefik.yml:ro
+      - $PWD/target/fem/config/traefik-certs.yml:/etc/traefik/traefik-certs.yml:ro
+      - $PWD/target/fem/certs:/etc/traefik/certs:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
