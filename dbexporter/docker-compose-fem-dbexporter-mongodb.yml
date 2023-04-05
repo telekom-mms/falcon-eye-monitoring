@@ -5,7 +5,7 @@ networks:
 
 services:
   fem_mongodb-exporter:
-    image: percona/mongodb_exporter:2.32.0
+    image: percona/mongodb_exporter:2.35.0
     restart: unless-stopped
     container_name: fem_mongodb_exporter
     ports:

@@ -11,7 +11,7 @@ volumes:
 
 services:
   fem_jaeger-collector:
-    image: jaegertracing/jaeger-collector:1.42
+    image: jaegertracing/jaeger-collector:1.43
     restart: unless-stopped
     container_name: fem_jaeger-collector
     environment:
@@ -28,7 +28,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_jaeger-query:
-    image: jaegertracing/jaeger-query:1.42
+    image: jaegertracing/jaeger-query:1.43
     restart: unless-stopped
     container_name: fem_jaeger-query
     ports:
@@ -47,7 +47,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_opensearch:
-    image: opensearchproject/opensearch:2.5.0
+    image: opensearchproject/opensearch:2.6.0
     restart: unless-stopped
     container_name: fem_opensearch
     environment:
@@ -82,7 +82,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_jaeger-es-cleaner:
-    image: jaegertracing/jaeger-es-index-cleaner:1.42
+    image: jaegertracing/jaeger-es-index-cleaner:1.43
     container_name: fem_opensearch-cleaner
     command: [
       "7",
@@ -93,7 +93,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_prometheus:
-    image: prom/prometheus:v2.42.0
+    image: prom/prometheus:v2.43.0
     restart: unless-stopped
     container_name: fem_prometheus
     ports:
@@ -106,7 +106,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_grafana:
-    image: grafana/grafana:9.3.6
+    image: grafana/grafana:9.4.7
     restart: unless-stopped
     container_name: fem_grafana
     ports:
@@ -123,7 +123,7 @@ services:
       - "traefik.http.routers.grafana.tls=true"
       - "traefik.http.routers.grafana.rule=Host(`fem_grafana`)"
   fem_otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.71.0
+    image: otel/opentelemetry-collector-contrib:0.74.0
     restart: unless-stopped
     container_name: fem_otel-collector
     command: ["--config=/etc/otel-collector-config.yml"]
@@ -147,7 +147,7 @@ services:
     networks:
       - monitoring
   fem_traefik:
-    image: traefik:v2.9.6
+    image: traefik:v2.9.8
     restart: unless-stopped
     container_name: fem_traefik
     ports:

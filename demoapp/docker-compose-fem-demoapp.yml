@@ -15,4 +15,4 @@ services:
     networks:
       - monitoring
     volumes:
-      - $PWD/target/certs:/tmp/certs:ro
+      - $PWD/target/fem/certs:/tmp/certs:ro

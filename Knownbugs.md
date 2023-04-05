@@ -12,6 +12,7 @@ Error: Minified React error #185; visit https://reactjs.org/docs/error-decoder.h
 ```
 
 If your are facing the problem described above you have to go back to version 9.0.2
+After updating to version 9.4.7 the problem disappeared in our tests. We will still investigate the issue further.
 
 ## Opensearch
 
