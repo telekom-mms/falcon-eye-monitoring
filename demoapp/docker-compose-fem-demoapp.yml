@@ -10,6 +10,7 @@ services:
     image: fem_demoapp
     restart: unless-stopped
     container_name: fem_demoapp
+    hostname: fem_demoapp
     ports:
       - 38080:8080
     networks:

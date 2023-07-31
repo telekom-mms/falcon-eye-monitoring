@@ -10,6 +10,7 @@ services:
     image: fem_shellexporter
     restart: unless-stopped
     container_name: fem_shellexporter
+    hostname: fem_shellexporter
     volumes:
       - $PWD/target/shellexporter/metrics:/usr/local/shellexporter/metrics:ro
     ports:

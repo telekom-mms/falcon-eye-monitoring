@@ -269,7 +269,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "{exception=\"RuntimeException\",le=\"+Inf\",service_name=\"demoapp\"}",
+          "expr": "{exception=\"RuntimeException\",exported_job=\"demoapp\"}",
           "legendFormat": "{{exception}}",
           "range": true,
           "refId": "A"
@@ -307,7 +307,7 @@
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
-          "expr": "{servicename=\"demoapp\"} |~\"java.lang.RuntimeException\" | json",
+          "expr": "{job=\"demoapp\", level=\"ERROR\"} |= ``",
           "refId": "A"
         }
       ],
@@ -396,7 +396,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "sum by(http_status_code)({le=\"+Inf\",service_name=\"demoapp\",http_status_code!=\"\"})",
+          "expr": "sum by(http_status_code)({exported_job=\"demoapp\",http_status_code!=\"\"})",
           "legendFormat": "{{http_status_code}}",
           "range": true,
           "refId": "A"
@@ -488,7 +488,7 @@
             "uid": "P8E80F9AEF21F6940"
           },
           "editorMode": "code",
-          "expr": "sum_over_time({servicename=\"demoapp\"} |~\"Started PetClinicApplication\" | json | line_format \"{{.body}}\" | pattern `Started PetClinicApplication in <starttime> <_>` | unwrap starttime [1m])",
+          "expr": "sum_over_time({job=\"demoapp\"} |~\"Started PetClinicApplication\" | json | line_format \"{{.body}}\" | pattern `Started PetClinicApplication in <starttime> <_>` | unwrap starttime [1m])",
           "legendFormat": "container: {{hostname}}, pid: {{resources_process_pid}}",
           "queryType": "range",
           "refId": "A"

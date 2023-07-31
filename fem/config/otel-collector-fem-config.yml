@@ -18,14 +18,6 @@ exporters:
       enabled: true
   loki:
     endpoint: "http://fem_loki:3100/loki/api/v1/push"
-    format: json
-    labels:
-      attributes:
-        container_name: ""
-        source: ""
-      resource:
-        host.name: "hostname"
-        service.name: "servicename"
 
 processors:
   batch:

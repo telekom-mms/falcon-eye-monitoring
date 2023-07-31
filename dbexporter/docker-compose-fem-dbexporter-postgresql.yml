@@ -5,9 +5,10 @@ networks:
 
 services:
   fem_postgresql-exporter:
-    image: prometheuscommunity/postgres-exporter:v0.12.0
+    image: prometheuscommunity/postgres-exporter:v0.13.2
     restart: unless-stopped
     container_name: fem_postgresql_exporter
+    hostname: fem_postgresql_exporter
     ports:
       - "29187:9187"
     environment:
