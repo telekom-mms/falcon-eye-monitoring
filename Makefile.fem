@@ -9,7 +9,8 @@ prepare-fem:
 
 config: prepare-fem
 	@cp -rn fem/config target/fem
-	@chmod 644 target/fem/config/*.yml
+	@find target/fem/config/ -type d -exec chmod 755 {} \;
+	@find target/fem/config/ -type f -exec chmod 644 {} \;
 
 certs: prepare-fem
 	@openssl req -newkey rsa:4096 -nodes -keyout target/fem/certs/server.key -subj "/C=DE/ST=Sachsen/L=Dresden/O=T-Systems MMS GmbH/CN=monitoring-host" -out target/fem/certs/server.csr
