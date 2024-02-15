@@ -5,10 +5,10 @@ prepare-fem-shellexporter:
 	@cp -rn shellexporter target
 
 start: prepare-fem-shellexporter
-	docker-compose --file target/shellexporter/docker-compose-fem-shellexporter.yml --project-name fem up -d
+	docker compose --file target/shellexporter/docker-compose-fem-shellexporter.yml --project-name fem up -d
 
 stop: prepare-fem-shellexporter
-	docker-compose --file target/shellexporter/docker-compose-fem-shellexporter.yml --project-name fem down
+	docker compose --file target/shellexporter/docker-compose-fem-shellexporter.yml --project-name fem down
 
 clean:
 	@rm -rf target/shellexporter

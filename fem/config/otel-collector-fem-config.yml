@@ -8,8 +8,8 @@ receivers:
           key_file:  /tmp/certs/server.key
 
 exporters:
-  jaeger:
-    endpoint: "fem_jaeger-collector:14250"
+  otlp/jaeger:
+    endpoint: "fem_jaeger-collector:4317"
     tls:
       insecure: true
   prometheus:
@@ -30,7 +30,7 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      exporters: [jaeger]
+      exporters: [otlp/jaeger]
       processors: [batch]
     metrics:
       receivers: [otlp]

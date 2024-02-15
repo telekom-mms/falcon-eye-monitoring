@@ -1,6 +1,6 @@
-FROM maven:3.9.3
+FROM maven:3.9.6
 
-ENV OTEL_VERSION=1.28.0
+ENV OTEL_VERSION=1.32.1
 
 WORKDIR /usr/local/opentelemetry
 
