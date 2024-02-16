@@ -5,7 +5,7 @@ networks:
 
 services:
   fem_postgresql-exporter:
-    image: prometheuscommunity/postgres-exporter:v0.13.2
+    image: prometheuscommunity/postgres-exporter:v0.15.0
     restart: unless-stopped
     container_name: fem_postgresql_exporter
     hostname: fem_postgresql_exporter
