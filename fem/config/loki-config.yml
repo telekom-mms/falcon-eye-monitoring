@@ -33,7 +33,6 @@ storage_config:
     directory: /tmp/loki/chunks
 
 limits_config:
-  enforce_metric_name: false
   reject_old_samples: false
   reject_old_samples_max_age: 43800h
   #reject_old_samples_max_age: 168h
@@ -64,10 +63,6 @@ query_range:
 
 querier:
   max_concurrent: 2048
-
-chunk_store_config:
-  chunk_cache_config:
-    enable_fifocache: false
 
 analytics:
   reporting_enabled: false

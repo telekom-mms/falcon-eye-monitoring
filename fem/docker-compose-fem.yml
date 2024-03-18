@@ -11,7 +11,7 @@ volumes:
 
 services:
   fem_jaeger-collector:
-    image: jaegertracing/jaeger-collector:1.47
+    image: jaegertracing/jaeger-collector:1.54
     restart: unless-stopped
     container_name: fem_jaeger-collector
     hostname: fem_jaeger-collector
@@ -29,7 +29,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_jaeger-query:
-    image: jaegertracing/jaeger-query:1.47
+    image: jaegertracing/jaeger-query:1.54
     restart: unless-stopped
     container_name: fem_jaeger-query
     hostname: fem_jaeger-query
@@ -49,7 +49,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_opensearch:
-    image: opensearchproject/opensearch:2.9.0
+    image: opensearchproject/opensearch:2.11.1
     restart: unless-stopped
     container_name: fem_opensearch
     hostname: fem_opensearch
@@ -75,7 +75,7 @@ services:
     networks:
       - monitoring
   fem_opensearch_exporter:
-    image: prometheuscommunity/elasticsearch-exporter:v1.6.0
+    image: prometheuscommunity/elasticsearch-exporter:v1.7.0
     restart: unless-stopped
     container_name: fem_opensearch_exporter
     hostname: fem_opensearch_exporter
@@ -86,7 +86,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_jaeger-es-cleaner:
-    image: jaegertracing/jaeger-es-index-cleaner:1.47
+    image: jaegertracing/jaeger-es-index-cleaner:1.54
     container_name: fem_opensearch-cleaner
     hostname: fem_opensearch-cleaner
     command: [
@@ -98,7 +98,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_prometheus:
-    image: prom/prometheus:v2.46.0
+    image: prom/prometheus:v2.49.1
     restart: unless-stopped
     container_name: fem_prometheus
     hostname: fem_prometheus
@@ -112,7 +112,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_grafana:
-    image: grafana/grafana:10.0.3
+    image: grafana/grafana:10.3.3
     restart: unless-stopped
     container_name: fem_grafana
     hostname: fem_grafana
@@ -130,7 +130,7 @@ services:
       - "traefik.http.routers.grafana.tls=true"
       - "traefik.http.routers.grafana.rule=Host(`fem_grafana`)"
   fem_otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.81.0
+    image: otel/opentelemetry-collector-contrib:0.94.0
     restart: unless-stopped
     container_name: fem_otel-collector
     hostname: fem_otel-collector
@@ -156,7 +156,7 @@ services:
     networks:
       - monitoring
   fem_traefik:
-    image: traefik:v2.10.4
+    image: traefik:v2.11.0
     restart: unless-stopped
     container_name: fem_traefik
     hostname: fem_traefik
