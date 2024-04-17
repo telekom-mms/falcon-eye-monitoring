@@ -1,0 +1,20 @@
+version: "3.8"
+
+networks:
+  monitoring:
+
+services:
+  fem_tests:
+    build:
+      context: .
+    image: fem_tests
+    restart: no
+    container_name: fem_tests
+    hostname: fem_tests
+    networks:
+      - monitoring
+    environment:
+      DEMOAPP_URL: http://fem_demoapp:8080
+      GRAFANA_URL: http://fem_grafana:3000
+      GRAFANA_USER: admin
+      GRAFANA_PASSWORD: admin

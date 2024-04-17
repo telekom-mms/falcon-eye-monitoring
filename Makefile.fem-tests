@@ -1,0 +1,11 @@
+SHELL := /bin/bash
+
+prepare-fem-tests:
+	@mkdir -p target/tests
+	@cp -rn tests target/
+
+run: prepare-fem-tests
+	docker-compose --file target/tests/docker-compose-fem-tests.yml --project-name fem up --build
+
+clean:
+	@rm -rf target/tests
