@@ -1,12 +1,12 @@
-import pytest
-from playwright.sync_api import Page, Playwright, expect
 import os
-import time
+import pytest
+
+from datetime import datetime
+from faker import Faker
+from playwright.sync_api import Page, Playwright, expect
 
 from src.test.base import PreFlightCheck
 from src.pages import demoapp
-
-now = time.time()
 
 
 class Demoapp(PreFlightCheck):
@@ -19,7 +19,7 @@ class Demoapp(PreFlightCheck):
         """ Login if no context """
         if self.browser is None:
             self.browser = playwright.firefox.launch_persistent_context(
-                user_data_dir=f"./test_demoapp_{now}",
+                user_data_dir=f"./test_demoapp_{datetime.timestamp(datetime.now())}",
                 headless=os.getenv("HEADLESS") in ("true", "True", "yes"))
         page = self.browser.pages[0]
 
@@ -28,14 +28,37 @@ class Demoapp(PreFlightCheck):
         return page
 
 
+class DemoAppData:
+
+    class Owner:
+        def __init__(self, first_name: str, last_name: str, address: str, city: str, phone: str):
+            self.first_name = first_name
+            self.last_name = last_name
+            self.address = address
+            self.city = city
+            self.telephone = phone
+
+    class Pet:
+        def __init__(self, name: str, birth_date=datetime.date(datetime.now()).isoformat()):
+            self.name = name
+            self.birth_date = birth_date
+            self.type = "cat"
+
+    def __init__(self):
+        faker = Faker()
+        self.owner = self.Owner(faker.name(), faker.name(), faker.address(), faker.city(), "1234567890")
+        self.pet = self.Pet(faker.name())
+
+
 subject = Demoapp()
+data = DemoAppData()
 
 
 @pytest.mark.base
-def test_owners_page1(playwright: Playwright) -> None:
+def test_owners_page(playwright: Playwright) -> None:
     page = subject.setup(playwright)
 
-    demoapp.find_owners(page)
+    demoapp.list_owners(page)
 
     expect(page.get_by_role("link", name="George Franklin")).to_be_visible()
     expect(page.get_by_role("link", name="Betty Davis")).to_be_visible()
@@ -43,12 +66,7 @@ def test_owners_page1(playwright: Playwright) -> None:
     expect(page.get_by_role("link", name="Harold Davis")).to_be_visible()
     expect(page.get_by_role("link", name="Peter McTavish")).to_be_visible()
 
-
-@pytest.mark.base
-def test_owners_page2(playwright: Playwright) -> None:
-    page = subject.setup(playwright)
-
-    demoapp.find_owners(page, 2)
+    demoapp.list_owners(page, 2)
 
     expect(page.get_by_role("link", name="Jean Coleman")).to_be_visible()
     expect(page.get_by_role("link", name="Jeff Black")).to_be_visible()
@@ -61,8 +79,8 @@ def test_owners_page2(playwright: Playwright) -> None:
 def test_owners_actions(playwright: Playwright) -> None:
     page = subject.setup(playwright)
 
-    demoapp.find_owners(page)
-    demoapp.show_owner(page, "George Franklin")
+    demoapp.list_owners(page)
+    demoapp.show_owner_details(page, "George Franklin")
 
     expect(page.get_by_role("link", name="Edit Owner")).to_be_visible()
     expect(page.get_by_role("link", name="Add New Pet")).to_be_visible()
@@ -75,10 +93,31 @@ def test_owners_actions(playwright: Playwright) -> None:
 def test_owner_edit(playwright: Playwright) -> None:
     page = subject.setup(playwright)
 
-    demoapp.find_owners(page)
+    demoapp.list_owners(page)
     demoapp.edit_owner(page, "George Franklin")
 
     expect(page.get_by_text("Owner Values Updated")).to_be_visible()
+
+
+@pytest.mark.extended
+def test_owner_add(playwright: Playwright) -> None:
+    page = subject.setup(playwright)
+
+    demoapp.owners_index(page)
+    demoapp.add_owner(page, data.owner.first_name, data.owner.last_name, data.owner.address, data.owner.city, data.owner.telephone)
+
+    expect(page.get_by_text("New Owner Created")).to_be_visible()
+
+
+@pytest.mark.extended
+def test_pet_add(playwright: Playwright) -> None:
+    page = subject.setup(playwright)
+
+    demoapp.owners_index(page)
+    demoapp.search_owners_by_name(page, data.owner.last_name)
+    demoapp.add_pet(page, data.pet.name, data.pet.birth_date, data.pet.type)
+
+    expect(page.get_by_text("New Pet has been Added")).to_be_visible()
 
 
 @pytest.mark.extended
@@ -92,11 +131,6 @@ def test_veterinarians_page1(playwright: Playwright) -> None:
     expect(page.get_by_role("cell", name="Linda Douglas")).to_be_visible()
     expect(page.get_by_role("cell", name="Rafael Ortega")).to_be_visible()
     expect(page.get_by_role("cell", name="Henry Stevens")).to_be_visible()
-
-
-@pytest.mark.extended
-def test_veterinarians_page2(playwright: Playwright) -> None:
-    page = subject.setup(playwright)
 
     demoapp.find_veterinarians(page, 2)
 
