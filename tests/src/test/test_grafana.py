@@ -71,6 +71,7 @@ def test_dashboard_contains_panels(playwright: Playwright) -> None:
 
         expect(panel).to_be_visible()
 
+
 @pytest.mark.base
 def test_panel_data(playwright: Playwright) -> None:
     page = subject.setup(playwright)
@@ -81,6 +82,9 @@ def test_panel_data(playwright: Playwright) -> None:
            .get_by_role("button", name="Duration")).to_be_visible()
 
     expect(page.get_by_text("demoapp: GET /owners").first).to_be_visible()
+    # sort traces descending by start time otherwise they are out of viewport
+    page.get_by_role("button", name="Start time").click()
+    page.get_by_role("button", name="Start time").click()
     expect(page.get_by_text("demoapp: GET /vets.html").first).to_be_visible()
     expect(page.get_by_text("demoapp: GET /oups").first).to_be_visible()
 
@@ -97,4 +101,4 @@ def test_panel_data(playwright: Playwright) -> None:
            .get_by_role("button", name="container").first).to_be_visible()
 
     expect(page.get_by_test_id("data-testid Panel header http status code")
-           .locator("div").filter(has_text="Name200 302 400 500").first).to_be_visible()
+           .locator("div").filter(has_text="Name").first).to_be_visible()

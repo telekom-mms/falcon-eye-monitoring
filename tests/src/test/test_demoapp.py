@@ -120,8 +120,8 @@ def test_pet_add(playwright: Playwright) -> None:
     expect(page.get_by_text("New Pet has been Added")).to_be_visible()
 
 
-@pytest.mark.extended
-def test_veterinarians_page1(playwright: Playwright) -> None:
+@pytest.mark.base
+def test_veterinarians_page(playwright: Playwright) -> None:
     page = subject.setup(playwright)
 
     demoapp.find_veterinarians(page)
