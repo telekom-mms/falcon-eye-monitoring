@@ -1,7 +1,8 @@
 import os
-import pytest
-
+import random
 from datetime import datetime
+
+import pytest
 from faker import Faker
 from playwright.sync_api import Page, Playwright, expect
 
@@ -39,15 +40,16 @@ class DemoAppData:
             self.telephone = phone
 
     class Pet:
-        def __init__(self, name: str, birth_date=datetime.date(datetime.now()).isoformat()):
+        def __init__(self, name: str, type: str, birth_date=datetime.date(datetime.now()).isoformat()):
             self.name = name
             self.birth_date = birth_date
-            self.type = "cat"
+            self.type = type
+
 
     def __init__(self):
         faker = Faker()
-        self.owner = self.Owner(faker.name(), faker.name(), faker.address(), faker.city(), "1234567890")
-        self.pet = self.Pet(faker.name())
+        self.owner = self.Owner(faker.name(), faker.name(), faker.address(), faker.city(), str(random.randint(1, 1000000)))
+        self.pet = self.Pet(faker.name(), random.sample(["cat", "dog", "bird", "hamster", "lizard", "snake"], 6)[0])
 
 
 subject = Demoapp()
@@ -114,7 +116,7 @@ def test_pet_add(playwright: Playwright) -> None:
     page = subject.setup(playwright)
 
     demoapp.owners_index(page)
-    demoapp.search_owners_by_name(page, data.owner.last_name)
+    demoapp.search_owners(page, data.owner.last_name)
     demoapp.add_pet(page, data.pet.name, data.pet.birth_date, data.pet.type)
 
     expect(page.get_by_text("New Pet has been Added")).to_be_visible()
