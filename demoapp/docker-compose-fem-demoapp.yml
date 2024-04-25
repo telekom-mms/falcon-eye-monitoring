@@ -9,11 +9,17 @@ services:
       context: .
     image: fem_demoapp
     restart: unless-stopped
-    container_name: fem_demoapp
-    hostname: fem_demoapp
+    container_name: fem-demoapp
+    hostname: fem-demoapp
     ports:
-      - 38080:8080
+      - "38080:8080"
     networks:
       - monitoring
     volumes:
       - $PWD/target/fem/certs:/tmp/certs:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=monitoring"
+      - "traefik.http.routers.demoapp.entrypoints=https"
+      - "traefik.http.routers.demoapp.tls=true"
+      - "traefik.http.routers.demoapp.rule=Host(`fem-demoapp.localhost`)"
