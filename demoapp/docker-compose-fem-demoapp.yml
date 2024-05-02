@@ -7,7 +7,7 @@ services:
   fem_demoapp:
     build:
       context: .
-    image: fem_demoapp
+    image: fem-demoapp
     restart: unless-stopped
     container_name: fem-demoapp
     hostname: fem-demoapp

@@ -9,13 +9,13 @@ scrape_configs:
       - targets: ['fem-otel-collector:5317']
   - job_name: 'es'
     static_configs:
-      - targets: ['fem-opensearch_exporter:9114']
+      - targets: ['fem-opensearch-exporter:9114']
   - job_name: 'mongodb'
     static_configs:
-      - targets: ['fem-mongodb_exporter:9216']
+      - targets: ['fem-mongodb-exporter:9216']
   - job_name: 'postgresql'
     static_configs:
-      - targets: ['fem-postgresql_exporter:9187']
+      - targets: ['fem-postgresql-exporter:9187']
   - job_name: 'shellexporter'
     static_configs:
       - targets: ['fem-shellexporter:9360']

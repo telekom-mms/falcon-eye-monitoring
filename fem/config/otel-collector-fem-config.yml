@@ -9,7 +9,7 @@ receivers:
 
 exporters:
   otlp/jaeger:
-    endpoint: "fem_jaeger-collector:4317"
+    endpoint: "fem-jaeger-collector:4317"
     tls:
       insecure: true
   prometheus:

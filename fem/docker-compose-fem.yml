@@ -10,7 +10,7 @@ volumes:
   prometheus_data:
 
 services:
-  fem_jaeger-collector:
+  fem_jaeger_collector:
     image: jaegertracing/jaeger-collector:1.54
     restart: unless-stopped
     container_name: fem-jaeger-collector
@@ -28,7 +28,7 @@ services:
       - monitoring
     depends_on:
       - fem_opensearch
-  fem_jaeger-query:
+  fem_jaeger_query:
     image: jaegertracing/jaeger-query:1.54
     restart: unless-stopped
     container_name: fem-jaeger-query
@@ -77,15 +77,15 @@ services:
   fem_opensearch_exporter:
     image: prometheuscommunity/elasticsearch-exporter:v1.7.0
     restart: unless-stopped
-    container_name: fem-opensearch_exporter
-    hostname: fem-opensearch_exporter
+    container_name: fem-opensearch-exporter
+    hostname: fem-opensearch-exporter
     command:
      - '--es.uri=http://fem-opensearch:9200'
     networks:
       - monitoring
     depends_on:
       - fem_opensearch
-  fem_jaeger-es-cleaner:
+  fem_jaeger_es_cleaner:
     image: jaegertracing/jaeger-es-index-cleaner:1.54
     container_name: fem-opensearch-cleaner
     hostname: fem-opensearch-cleaner
