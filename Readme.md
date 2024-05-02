@@ -44,7 +44,7 @@ The following diagram illustrates the container setup using Jaeger-Tracing using
 
 `make --file Makefile.fem start`
 
-To access the grafana instance just navigate with your favorite browser to https://fem-grafana.localhost:20443.
+To access the grafana instance just navigate with your favorite browser to https://grafana.fem.localhost:20443.
 
 #### Stop
 
@@ -73,7 +73,7 @@ you have to add the otel java agent as JVM parameter together with some configur
 
 To start the demo application you have to start F.E.M. before.
 
-The demo application is available under https://fem-demoapp.localhost:20443.
+The demo application is available under https://demoapp.fem.localhost:20443.
 
 #### Stop
 

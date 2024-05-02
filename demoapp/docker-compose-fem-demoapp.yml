@@ -9,7 +9,7 @@ services:
       context: .
     image: fem-demoapp
     restart: unless-stopped
-    container_name: fem-demoapp
+    container_name: fem_demoapp
     hostname: fem-demoapp
     ports:
       - "38080:8080"
@@ -22,4 +22,6 @@ services:
       - "traefik.docker.network=monitoring"
       - "traefik.http.routers.demoapp.entrypoints=https"
       - "traefik.http.routers.demoapp.tls=true"
-      - "traefik.http.routers.demoapp.rule=Host(`fem-demoapp.localhost`)"
+      - "traefik.http.routers.demoapp.rule=Host(`demoapp.fem.localhost`)"
+    extra_hosts:
+      - "demoapp.fem:127.0.0.1"

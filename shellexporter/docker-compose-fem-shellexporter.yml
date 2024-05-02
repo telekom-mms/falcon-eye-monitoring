@@ -9,7 +9,7 @@ services:
       context: .
     image: fem-shellexporter
     restart: unless-stopped
-    container_name: fem-shellexporter
+    container_name: fem_shellexporter
     hostname: fem-shellexporter
     volumes:
       - $PWD/target/shellexporter/metrics:/usr/local/shellexporter/metrics:ro
