@@ -4,21 +4,21 @@ networks:
   monitoring:
 
 volumes:
-  fem_grafana_data:
-  fem_loki_data:
-  fem_opensearch_data:
-  fem_prometheus_data:
+  grafana_data:
+  loki_data:
+  opensearch_data:
+  prometheus_data:
 
 services:
-  fem_jaeger-collector:
+  fem_jaeger_collector:
     image: jaegertracing/jaeger-collector:1.54
     restart: unless-stopped
-    container_name: fem_jaeger-collector
-    hostname: fem_jaeger-collector
+    container_name: fem_jaeger_collector
+    hostname: fem-jaeger-collector
     environment:
       - SPAN_STORAGE_TYPE=elasticsearch
     command: [
-        "--es.server-urls=http://fem_opensearch:9200",
+        "--es.server-urls=http://fem-opensearch:9200",
         "--es.num-shards=1",
         "--es.num-replicas=0",
         "--es.version=7",
@@ -28,17 +28,17 @@ services:
       - monitoring
     depends_on:
       - fem_opensearch
-  fem_jaeger-query:
+  fem_jaeger_query:
     image: jaegertracing/jaeger-query:1.54
     restart: unless-stopped
-    container_name: fem_jaeger-query
-    hostname: fem_jaeger-query
+    container_name: fem_jaeger_query
+    hostname: fem-jaeger-query
     ports:
       - "26686:16686" #ui, notls
     environment:
       - SPAN_STORAGE_TYPE=elasticsearch
     command: [
-        "--es.server-urls=http://fem_opensearch:9200",
+        "--es.server-urls=http://fem-opensearch:9200",
         "--es.num-shards=1",
         "--es.num-replicas=0",
         "--es.version=7",
@@ -52,7 +52,7 @@ services:
     image: opensearchproject/opensearch:2.11.1
     restart: unless-stopped
     container_name: fem_opensearch
-    hostname: fem_opensearch
+    hostname: fem-opensearch
     environment:
       - cluster.name=fem-cluster
       - discovery.type=single-node
@@ -71,27 +71,27 @@ services:
     cap_add:
       - IPC_LOCK
     volumes:
-      - fem_opensearch_data:/usr/share/opensearch/data
+      - opensearch_data:/usr/share/opensearch/data
     networks:
       - monitoring
   fem_opensearch_exporter:
     image: prometheuscommunity/elasticsearch-exporter:v1.7.0
     restart: unless-stopped
     container_name: fem_opensearch_exporter
-    hostname: fem_opensearch_exporter
+    hostname: fem-opensearch-exporter
     command:
-     - '--es.uri=http://fem_opensearch:9200'
+     - '--es.uri=http://fem-opensearch:9200'
     networks:
       - monitoring
     depends_on:
       - fem_opensearch
-  fem_jaeger-es-cleaner:
+  fem_jaeger_es_cleaner:
     image: jaegertracing/jaeger-es-index-cleaner:1.54
-    container_name: fem_opensearch-cleaner
-    hostname: fem_opensearch-cleaner
+    container_name: fem_jaeger_es_cleaner
+    hostname: fem-opensearch-cleaner
     command: [
       "7",
-      "http://fem_opensearch:9200"
+      "http://fem-opensearch:9200"
     ]
     networks:
       - monitoring
@@ -101,12 +101,12 @@ services:
     image: prom/prometheus:v2.49.1
     restart: unless-stopped
     container_name: fem_prometheus
-    hostname: fem_prometheus
+    hostname: fem-prometheus
     ports:
       - "29090:9090" #ui, notls
     volumes:
+      - prometheus_data:/prometheus
       - $PWD/target/fem/config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - fem_prometheus_data:/prometheus
     networks:
       - monitoring
     depends_on:
@@ -115,25 +115,28 @@ services:
     image: grafana/grafana:10.3.3
     restart: unless-stopped
     container_name: fem_grafana
-    hostname: fem_grafana
+    hostname: fem-grafana
     ports:
       - "23000:3000" #ui, notls
     volumes:
-      - fem_grafana_data:/var/lib/grafana
+      - grafana_data:/var/lib/grafana
       - $PWD/target/fem/config/grafana-dashboard-templates:/var/lib/grafana-dashboard-templates
       - $PWD/target/fem/config/grafana-provisioning:/etc/grafana/provisioning
     networks:
       - monitoring
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=monitoring"
       - "traefik.http.routers.grafana.entrypoints=https"
       - "traefik.http.routers.grafana.tls=true"
-      - "traefik.http.routers.grafana.rule=Host(`fem_grafana`)"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.fem.localhost`)"
+    extra_hosts:
+      - "grafana.fem:127.0.0.1"
   fem_otel-collector:
     image: otel/opentelemetry-collector-contrib:0.94.0
     restart: unless-stopped
     container_name: fem_otel-collector
-    hostname: fem_otel-collector
+    hostname: fem-otel-collector
     command: ["--config=/etc/otel-collector-config.yml"]
     volumes:
       - $PWD/target/fem/config/otel-collector-fem-config.yml:/etc/otel-collector-config.yml:ro
@@ -146,11 +149,11 @@ services:
     image: grafana/loki:main
     restart: unless-stopped
     container_name: fem_loki
-    hostname: fem_loki
+    hostname: fem-loki
     command: -config.file=/etc/loki/config.yml
     volumes:
+      - loki_data:/tmp
       - $PWD/target/fem/config/loki-config.yml:/etc/loki/config.yml:ro
-      - fem_loki_data:/tmp
     ports:
       - 23100:3100 #api, notls
     networks:
@@ -159,7 +162,7 @@ services:
     image: traefik:v2.11.0
     restart: unless-stopped
     container_name: fem_traefik
-    hostname: fem_traefik
+    hostname: fem-traefik
     ports:
       - "20080:80"
       - "20443:443"

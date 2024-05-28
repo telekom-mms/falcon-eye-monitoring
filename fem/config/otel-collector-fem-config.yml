@@ -9,7 +9,7 @@ receivers:
 
 exporters:
   otlp/jaeger:
-    endpoint: "fem_jaeger-collector:4317"
+    endpoint: "fem-jaeger-collector:4317"
     tls:
       insecure: true
   prometheus:
@@ -17,7 +17,7 @@ exporters:
     resource_to_telemetry_conversion:
       enabled: true
   loki:
-    endpoint: "http://fem_loki:3100/loki/api/v1/push"
+    endpoint: "http://fem-loki:3100/loki/api/v1/push"
 
 processors:
   batch:
@@ -40,4 +40,3 @@ service:
       receivers: [otlp]
       processors: [batch]
       exporters: [loki]
-

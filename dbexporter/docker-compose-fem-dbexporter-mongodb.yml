@@ -4,11 +4,11 @@ networks:
   monitoring:
 
 services:
-  fem_mongodb-exporter:
+  fem_mongodb_exporter:
     image: percona/mongodb_exporter:2.37.0
     restart: unless-stopped
     container_name: fem_mongodb_exporter
-    hostname: fem_mongodb_exporter
+    hostname: fem-mongodb-exporter
     ports:
       - "29216:9216"
     command: [

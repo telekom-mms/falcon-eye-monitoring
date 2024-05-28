@@ -13,8 +13,8 @@ config: prepare-fem
 	@find target/fem/config/ -type f -exec chmod 644 {} \;
 
 certs: prepare-fem
-	@openssl req -newkey rsa:4096 -nodes -keyout target/fem/certs/server.key -subj "/C=DE/ST=Sachsen/L=Dresden/O=T-Systems MMS GmbH/CN=monitoring-host" -out target/fem/certs/server.csr
-	@openssl x509 -req -extfile <(printf "subjectAltName=DNS:fem_otel-collector,DNS:localhost,IP:127.0.0.1") -days 365 -in target/fem/certs/server.csr -signkey target/fem/certs/server.key -out target/fem/certs/server.crt
+	@openssl req -newkey rsa:4096 -nodes -keyout target/fem/certs/server.key -subj "/C=DE/ST=Sachsen/L=Dresden/O=Deutsche Telekom MMS GmbH/CN=monitoring-host" -out target/fem/certs/server.csr
+	@openssl x509 -req -extfile <(printf "subjectAltName=DNS:fem-otel-collector,DNS:fem-grafana.localhost,DNS:fem-demoapp.localhost,DNS:localhost,IP:127.0.0.1") -days 365 -in target/fem/certs/server.csr -signkey target/fem/certs/server.key -out target/fem/certs/server.crt
 	@chmod 644 target/fem/certs/server.key target/fem/certs/server.crt
 
 start: config certs

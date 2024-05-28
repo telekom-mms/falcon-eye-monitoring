@@ -4,11 +4,11 @@ networks:
   monitoring:
 
 services:
-  fem_postgresql-exporter:
+  fem_postgresql_exporter:
     image: prometheuscommunity/postgres-exporter:v0.15.0
     restart: unless-stopped
     container_name: fem_postgresql_exporter
-    hostname: fem_postgresql_exporter
+    hostname: fem-postgresql-exporter
     ports:
       - "29187:9187"
     environment:

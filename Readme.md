@@ -21,16 +21,16 @@ The following diagram illustrates the container setup using Jaeger-Tracing using
 
 #### Interfaces
 
-| external Interface | Port | Description |
-|---|---|---|
+| external Interface | Port | Description                                                                                   |
+|---|---|-----------------------------------------------------------------------------------------------|
 | GrafanaUI | 23000 | Provides direct access to grafana. Do not use in production. Please use TraefikHttps instead. |
-| JaegerQueryUI | 26686 | Provides direct access to jaeger ui. Do not use in production. |
-| LokiHttp | 23100 | Provides api accessto loki. Do not use in production. |
-| OtelAgentGrpc | 24318 | Secured endpoint to collect metrics, traces and logs from application. |
-| PrometheusHttp | 29090 | Provides direct access to prometheus. Do not use in production. |
-| TraefikDashboard | 28080 | Provides traefik dashboard. Do not use in production. |
-| TraefikHttp | 20080 | Provides unencrypted access to traefik http interface. Do not use in production. |
-| TraefikHttps | 20443 | Provides secured access to traefik http interface. |
+| JaegerQueryUI | 26686 | Provides direct access to jaeger ui. Do not use in production.                                |
+| LokiHttp | 23100 | Provides api accessto loki. Do not use in production.                                         |
+| OtelAgentGrpc | 24318 | Secured endpoint to collect metrics, traces and logs from application.                        |
+| PrometheusHttp | 29090 | Provides direct access to prometheus. Do not use in production.                               |
+| TraefikDashboard | 28080 | Provides traefik dashboard. Do not use in production.                                         |
+| TraefikHttp | 20080 | Provides unencrypted access to traefik http interface. Do not use in production.              |
+| TraefikHttps | 20443 | Provides secured access to traefik https interface.                                           |
 
 #### Configuration / Preparation
 
@@ -43,6 +43,8 @@ The following diagram illustrates the container setup using Jaeger-Tracing using
 #### Start
 
 `make --file Makefile.fem start`
+
+To access the grafana instance just navigate with your favorite browser to https://grafana.fem.localhost:20443.
 
 #### Stop
 
@@ -70,6 +72,8 @@ you have to add the otel java agent as JVM parameter together with some configur
 `make --file Makefile.fem-demoapp start`
 
 To start the demo application you have to start F.E.M. before.
+
+The demo application is available under https://demoapp.fem.localhost:20443.
 
 #### Stop
 
