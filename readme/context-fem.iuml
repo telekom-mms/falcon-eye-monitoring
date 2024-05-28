@@ -3,65 +3,72 @@
 left to right direction
 
 node "application-host" {
+
   component application {
       [Otel Agent] ..> OtelAgentGrpc
   }
 }
 
 node "monitoring-host" {
-  package "exporter" {
-    [Otel Collector] - OtelAgentGrpc
-    [Otel Collector] --> [Jaeger Exporter]
-    [Otel Collector] --> [Loki Exporter]
-    [Otel Collector] --> [Prometheus Exporter]
 
-    [Loki Exporter] ..> LokiHttp
+  [Filesystem] - DockerVolume
 
-    [Jaeger Exporter] ..> JaegerCollectorHttp
+  package "otel" {
 
-    [Prometheus Exporter] - PrometheusExporterHttp
-  }
+      package "exporter" {
+        [Otel Collector] - OtelAgentGrpc
+        [Otel Collector] --> [Jaeger Exporter]
+        [Otel Collector] --> [Loki Exporter]
+        [Otel Collector] --> [Prometheus Exporter]
 
-  package "traces" {
-    [Opensearch] - OpensearchHttp
-    [Opensearch] ..> Filesystem
+        [Loki Exporter] ..> LokiHttp
 
-    [Jaeger Collector] - JaegerCollectorHttp
-    [Jaeger Collector] ..> OpensearchHttp
-    [Jaeger Query] ..> OpensearchHttp
-    [Jaeger Query] - JaegerQueryHttp
-    [Jaeger Query] - JaegerQueryUI
-  }
+        [Jaeger Exporter] ..> JaegerCollectorHttp
 
-  package "logs" {
-    [Loki] - LokiHttp
-    [Loki] ..> Filesystem
-  }
+        [Prometheus Exporter] - PrometheusExporterHttp
+      }
 
-  package "metrics" {
-    [Prometheus] ..> Filesystem
-    [Prometheus] ..> PrometheusExporterHttp
-    [Prometheus] - PrometheusHttp
-  }
+      package "traces" {
+        [Opensearch] - OpensearchHttp
+        [Opensearch] ..> DockerVolume
+
+        [Jaeger Collector] - JaegerCollectorHttp
+        [Jaeger Collector] ..> OpensearchHttp
+        [Jaeger Query] ..> OpensearchHttp
+        [Jaeger Query] - JaegerQueryHttp
+        [Jaeger Query] - JaegerQueryUI
+      }
+
+      package "logs" {
+        [Loki] - LokiHttp
+        [Loki] ..> DockerVolume
+      }
+
+      package "metrics" {
+        [Prometheus] ..> DockerVolume
+        [Prometheus] ..> PrometheusExporterHttp
+        [Prometheus] - PrometheusHttp
+      }
+    }
 
   package "grafana" {
     [Grafana] - GrafanaUI
     [Grafana] ..> PrometheusHttp
     [Grafana] ..> JaegerQueryHttp
-    [Grafana] ..> Filesystem
+    [Grafana] ..> DockerVolume
   }
 
-  [Traefik] ..> GrafanaUI
-  [Traefik] - TraefikHttps
-  [Traefik] - TraefikHttp
-  [Traefik] - TraefikDashboard
+  package "revproxy" {
+    [Traefik] ..> GrafanaUI
+    [Traefik] ..> DemoAppUI
+    [Traefik] - TraefikHttps
+    [Traefik] - TraefikHttp
+    [Traefik] - TraefikDashboard
+  }
 }
 
 node "user-host" {
   [Browser] ..> TraefikHttps
-}
-
-node "Filesystem" {
 }
 
 @enduml

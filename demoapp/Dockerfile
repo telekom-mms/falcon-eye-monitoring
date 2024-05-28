@@ -1,6 +1,6 @@
-FROM maven:3.9.3
+FROM maven:3.9.6
 
-ENV OTEL_VERSION=1.28.0
+ENV OTEL_VERSION=1.32.1
 
 WORKDIR /usr/local/opentelemetry
 
@@ -15,7 +15,7 @@ EXPOSE 8080
 
 CMD java \
 -javaagent:/usr/local/opentelemetry/opentelemetry-javaagent.jar \
--Dotel.exporter.otlp.endpoint=https://fem_otel-collector:4318 \
+-Dotel.exporter.otlp.endpoint=https://fem-otel-collector:4318 \
 -Dotel.exporter.otlp.certificate=/tmp/certs/server.crt \
 -Dotel.resource.attributes=service.name=demoapp \
 -Dotel.metrics.exporter=otlp \
