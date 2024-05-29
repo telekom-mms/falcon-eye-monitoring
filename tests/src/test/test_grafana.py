@@ -73,7 +73,7 @@ def test_dashboard_contains_panels(playwright: Playwright) -> None:
 
 
 @pytest.mark.base
-def test_panel_data(playwright: Playwright) -> None:
+def test_panel_data_trace_duration_graph(playwright: Playwright) -> None:
     page = subject.setup(playwright)
 
     grafana.open_dashboard(page, "demoapp")
@@ -81,12 +81,27 @@ def test_panel_data(playwright: Playwright) -> None:
     expect(page.get_by_test_id("data-testid VizLegend series Duration")
            .get_by_role("button", name="Duration")).to_be_visible()
 
+
+@pytest.mark.base
+def test_panel_data_trace_duration_list(playwright: Playwright) -> None:
+    page = subject.setup(playwright)
+
+    grafana.open_dashboard(page, "demoapp")
+
+    page.get_by_test_id("data-testid Panel header trace duration descending").get_by_test_id("header-container").click()
+    page.get_by_test_id("data-testid Panel menu trace duration descending").click()
+    page.get_by_test_id("data-testid Panel menu item View").click()
+
     expect(page.get_by_text("demoapp: GET /owners").first).to_be_visible()
-    # sort traces descending by start time otherwise they are out of viewport
-    page.get_by_role("button", name="Start time").click()
-    page.get_by_role("button", name="Start time").click()
     expect(page.get_by_text("demoapp: GET /vets.html").first).to_be_visible()
     expect(page.get_by_text("demoapp: GET /oups").first).to_be_visible()
+
+
+@pytest.mark.base
+def test_panel_data_runtime_exception(playwright: Playwright) -> None:
+    page = subject.setup(playwright)
+
+    grafana.open_dashboard(page, "demoapp")
 
     expect(page.get_by_test_id("data-testid Panel header runtime exceptions")
            .get_by_role("button", name="RuntimeException").first).to_be_visible()
@@ -94,11 +109,26 @@ def test_panel_data(playwright: Playwright) -> None:
     expect(page.get_by_test_id("data-testid Panel header logfile - exceptions")
            .locator("div").filter(has_text="exception").first).to_be_visible()
 
-    # scroll down
-    page.mouse.wheel(0, 250)
 
-    expect(page.get_by_test_id("data-testid Panel header logfile - app start duration")
-           .get_by_role("button", name="container").first).to_be_visible()
+@pytest.mark.base
+def test_panel_data_http_status(playwright: Playwright) -> None:
+    page = subject.setup(playwright)
+
+    grafana.open_dashboard(page, "demoapp")
+
+    page.get_by_test_id("data-testid Panel header trace duration").press("PageDown")
 
     expect(page.get_by_test_id("data-testid Panel header http status code")
            .locator("div").filter(has_text="Name").first).to_be_visible()
+
+
+@pytest.mark.base
+def test_panel_data_app_starts(playwright: Playwright) -> None:
+    page = subject.setup(playwright)
+
+    grafana.open_dashboard(page, "demoapp")
+
+    page.get_by_test_id("data-testid Panel header trace duration").press("PageDown")
+
+    expect(page.get_by_test_id("data-testid Panel header logfile - app start duration")
+           .get_by_role("button", name="container").first).to_be_visible()
