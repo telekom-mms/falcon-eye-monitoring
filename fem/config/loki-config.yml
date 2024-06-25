@@ -1,3 +1,7 @@
+################################################################################
+# see https://grafana.com/docs/loki/latest/configure for configuration details #
+################################################################################
+
 auth_enabled: false
 
 server:
@@ -11,6 +15,10 @@ common:
   replication_factor: 1
   path_prefix: /tmp/loki
 
+compactor:
+  working_directory: /tmp/loki/compactor
+  compaction_interval: 5m
+
 schema_config:
   configs:
     - from: 2020-05-15
@@ -22,28 +30,23 @@ schema_config:
         period: 24h
 
 storage_config:
+  tsdb_shipper:
+    active_index_directory: /tmp/loki/tsdb-index
+    cache_location: /tmp/loki/tsdb-cache
   filesystem:
     directory: /tmp/loki/chunks
+
+query_scheduler:
+  max_outstanding_requests_per_tenant: 32768
 
 limits_config:
   reject_old_samples: false
   reject_old_samples_max_age: 43800h
-  #reject_old_samples_max_age: 168h
   split_queries_by_interval: 24h
 
 frontend:
-  # Maximum number of outstanding requests per tenant per frontend; requests
-  # beyond this error with HTTP 429.
-  # CLI flag: -querier.max-outstanding-requests-per-tenant
   max_outstanding_per_tenant: 4096 # default = 100]
-
-  # Compress HTTP responses.
-  # CLI flag: -querier.compress-http-responses
   compress_responses: true # default = false]
-
-  # Log queries that are slower than the specified duration. Set to 0 to disable.
-  # Set to < 0 to enable on all queries.
-  # CLI flag: -frontend.log-queries-longer-than
   log_queries_longer_than: 20s
 
 query_range:
