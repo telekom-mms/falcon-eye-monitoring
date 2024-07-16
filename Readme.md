@@ -154,7 +154,7 @@ So if you plan to use this in production, you should consider using a https-prox
 
 ### Tests
 
-There are playwright tests provided to ensure all containers are working properly and metrics, logs and traces are collected.
+There are playwright tests provided to ensure all containers are working properly and metrics, logs and traces are collected and presented in Grafana's dashboards.
 
 #### Start
 
