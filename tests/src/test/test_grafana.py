@@ -24,7 +24,7 @@ class Grafana(PreFlightCheck):
         if self.browser is None:
             self.browser = playwright.firefox.launch_persistent_context(
                 user_data_dir=f"./test_grafana_{now}",
-                headless=os.getenv("HEADLESS") in ("true", "True", "yes"))
+                headless=os.getenv("HEADLESS") in ("true", "True", "TRUE"))
         page = self.browser.pages[0]
 
         page.goto(self.url)
