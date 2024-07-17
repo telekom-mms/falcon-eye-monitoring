@@ -7,6 +7,7 @@ Like a falcon, everything in sight! F.E.M. brings it all together: logfile, trac
 - [Demo application](#demo-java-application-petclinic)  
 - [DB Exporters](#db-exporters)  
 - [Shell Exporter](#shell-exporter)  
+- [Playwright Tests](#tests)  
 
 [Known bugs and problems](Knownbugs.md)  
 
@@ -150,6 +151,20 @@ The folder is read-only mounted to the container under /usr/local/shellexporter/
 #### Security
 Please notice that by design no encryption for transport and no authentication for the endpoint are implemented.
 So if you plan to use this in production, you should consider using a https-proxy for terminate the sessions, e.g. as a side container.
+
+### Tests
+
+There are playwright tests provided to ensure all containers are working properly and metrics, logs and traces are collected and presented in Grafana's dashboards.
+
+#### Start
+
+It requires F.E.M. _and_ Demoapp running.
+
+`make --file Makefile.fem-tests run`
+
+#### Security
+Please notice that the tests assume default credentials for grafana. If you are already updated the administrator password (recommended for production)
+you have to update the credentials in the [docker-compose-fem-tests.yml](tests/docker-compose-fem-tests.yml) file.
 
 
 ### Description
