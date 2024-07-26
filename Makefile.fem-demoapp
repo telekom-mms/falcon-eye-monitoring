@@ -1,5 +1,7 @@
 SHELL := /bin/bash
 
+.PHONY: clean prepare-fem-demoapp
+
 prepare-fem-demoapp:
 	@mkdir -p target/demoapp
 	@cp -rn demoapp target/
