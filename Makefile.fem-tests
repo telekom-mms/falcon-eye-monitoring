@@ -1,5 +1,7 @@
 SHELL := /bin/bash
 
+.PHONY: clean prepare-fem-tests
+
 prepare-fem-tests:
 	@mkdir -p target/tests
 	@cp -rn tests target/

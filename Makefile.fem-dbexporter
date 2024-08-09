@@ -1,5 +1,7 @@
 SHELL := /bin/bash
 
+.PHONY: clean prepare-fem-dbexporter-mongodb prepare-fem-dbexporter-postgresql config-mongodb config-postgresql
+
 prepare-fem-dbexporter-mongodb:
 	@mkdir -p target/dbexporter
 	@cp -rn dbexporter/docker-compose-fem-dbexporter-mongodb.yml target/dbexporter

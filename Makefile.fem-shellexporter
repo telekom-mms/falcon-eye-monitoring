@@ -1,5 +1,7 @@
 SHELL := /bin/bash
 
+.PHONY: clean prepare-fem-shellexporter
+
 prepare-fem-shellexporter:
 	@mkdir -p target/shellexporter
 	@cp -rn shellexporter target
