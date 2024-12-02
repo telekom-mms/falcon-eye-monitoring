@@ -1,8 +1,12 @@
-FROM mcr.microsoft.com/playwright:v1.40.0-jammy
+FROM mcr.microsoft.com/playwright:v1.46.0-jammy
 
 ENV HEADLESS=true
 
+COPY --chown=root:root pyproject.toml /
+COPY --chown=root:root poetry.lock /
+
 RUN apt-get update && apt-get install --yes python3-poetry
+RUN poetry config virtualenvs.create false
 RUN poetry install
 RUN poetry run playwright install
 

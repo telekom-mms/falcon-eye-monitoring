@@ -1,5 +1,6 @@
 import os
 import random
+import string
 from datetime import datetime
 
 import pytest
@@ -48,7 +49,8 @@ class DemoAppData:
 
     def __init__(self):
         faker = Faker()
-        self.owner = self.Owner(faker.name(), faker.name(), faker.address(), faker.city(), str(random.randint(1, 1000000)))
+        self.owner = self.Owner(faker.name(), faker.name(), faker.address(), faker.city(),
+                                ''.join(random.choice(string.digits) for _ in range(10)))
         self.pet = self.Pet(faker.name(), random.sample(["cat", "dog", "bird", "hamster", "lizard", "snake"], 6)[0])
 
 
