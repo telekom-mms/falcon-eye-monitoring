@@ -11,7 +11,7 @@ volumes:
 
 services:
   fem_jaeger_collector:
-    image: jaegertracing/jaeger-collector:1.54
+    image: jaegertracing/jaeger-collector:1.63.0
     restart: unless-stopped
     container_name: fem_jaeger_collector
     hostname: fem-jaeger-collector
@@ -29,7 +29,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_jaeger_query:
-    image: jaegertracing/jaeger-query:1.54
+    image: jaegertracing/jaeger-query:1.63.0
     restart: unless-stopped
     container_name: fem_jaeger_query
     hostname: fem-jaeger-query
@@ -49,7 +49,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_opensearch:
-    image: opensearchproject/opensearch:2.11.1
+    image: opensearchproject/opensearch:2.18.0
     restart: unless-stopped
     container_name: fem_opensearch
     hostname: fem-opensearch
@@ -61,6 +61,7 @@ services:
       - plugins.security.disabled=true # disable tls which is enabled by default
       - bootstrap.memory_lock=true
       - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx6144m"
+      - "OPENSEARCH_INITIAL_ADMIN_PASSWORD=F_E_M_rules_the_world_since_2022!"
     ulimits:
       memlock:
         soft: -1
@@ -75,7 +76,7 @@ services:
     networks:
       - monitoring
   fem_opensearch_exporter:
-    image: prometheuscommunity/elasticsearch-exporter:v1.7.0
+    image: prometheuscommunity/elasticsearch-exporter:v1.8.0
     restart: unless-stopped
     container_name: fem_opensearch_exporter
     hostname: fem-opensearch-exporter
@@ -86,7 +87,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_jaeger_es_cleaner:
-    image: jaegertracing/jaeger-es-index-cleaner:1.54
+    image: jaegertracing/jaeger-es-index-cleaner:1.63.0
     container_name: fem_jaeger_es_cleaner
     hostname: fem-opensearch-cleaner
     command: [
@@ -98,7 +99,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_prometheus:
-    image: prom/prometheus:v2.49.1
+    image: prom/prometheus:v2.55.1
     restart: unless-stopped
     container_name: fem_prometheus
     hostname: fem-prometheus
@@ -112,7 +113,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_grafana:
-    image: grafana/grafana:10.3.3
+    image: grafana/grafana:11.3.1
     restart: unless-stopped
     container_name: fem_grafana
     hostname: fem-grafana
@@ -133,7 +134,7 @@ services:
     extra_hosts:
       - "grafana.fem:127.0.0.1"
   fem_otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.94.0
+    image: otel/opentelemetry-collector-contrib:0.114.0
     restart: unless-stopped
     container_name: fem_otel-collector
     hostname: fem-otel-collector
@@ -159,7 +160,7 @@ services:
     networks:
       - monitoring
   fem_traefik:
-    image: traefik:v2.11.0
+    image: traefik:v3.2.1
     restart: unless-stopped
     container_name: fem_traefik
     hostname: fem-traefik
