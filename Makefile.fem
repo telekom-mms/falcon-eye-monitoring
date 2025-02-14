@@ -1,5 +1,7 @@
 SHELL := /bin/bash
 
+.PHONY: clean prepare-fem config certs
+
 prepare-fem:
 	@mkdir -p target/fem/certs
 	@chmod 755 target/fem/certs
