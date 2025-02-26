@@ -1,5 +1,3 @@
-version: "3.8"
-
 networks:
   monitoring:
 
@@ -14,6 +12,6 @@ services:
     volumes:
       - $PWD/target/shellexporter/metrics:/usr/local/shellexporter/metrics:ro
     ports:
-      - 9360:9360
+      - "9360:9360"
     networks:
       - monitoring
