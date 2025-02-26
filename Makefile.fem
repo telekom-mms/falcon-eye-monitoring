@@ -23,5 +23,5 @@ start: config certs
 stop: prepare-fem
 	docker-compose --file target/fem/docker-compose-fem.yml --project-name fem down
 
-clean:
+clean: stop
 	@rm -rf target/fem
