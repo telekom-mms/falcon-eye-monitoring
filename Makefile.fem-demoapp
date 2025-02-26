@@ -10,5 +10,5 @@ start: prepare-fem-demoapp
 stop: prepare-fem-demoapp
 	docker-compose --file target/demoapp/docker-compose-fem-demoapp.yml --project-name fem down
 
-clean:
+clean: stop
 	@rm -rf target/demoapp
