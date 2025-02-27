@@ -14,6 +14,13 @@ Like a falcon, everything in sight! F.E.M. brings it all together: logfile, trac
 
 ## Setup
 
+### Prerequisites
+
+You need `docker` and `docker-compose-plugin` installed on your system. 
+
+Alternatively you can use the docker compose standalone. 
+In this case you have to use `make` with parameter `LEGACY=true`.
+
 ### F.E.M
 
 The following diagram illustrates the container setup using Jaeger-Tracing using an Opensearch backend.

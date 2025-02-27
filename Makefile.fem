@@ -2,6 +2,10 @@ SHELL := /bin/bash
 
 .PHONY: clean prepare-fem config certs
 
+ifndef $(LEGACY)
+LEGACY = false
+endif
+
 prepare-fem:
 	@mkdir -p target/fem/certs
 	@chmod 755 target/fem/certs
@@ -19,11 +23,21 @@ certs: prepare-fem
 	@openssl x509 -req -extfile <(printf "subjectAltName=DNS:fem-otel-collector,DNS:fem-grafana.localhost,DNS:fem-demoapp.localhost,DNS:localhost,IP:127.0.0.1") -days 365 -in target/fem/certs/server.csr -signkey target/fem/certs/server.key -out target/fem/certs/server.crt
 	@chmod 644 target/fem/certs/server.key target/fem/certs/server.crt
 
+start_legacy: config certs
+
 start: config certs
+ifeq ($(LEGACY), true)
 	docker-compose --file target/fem/docker-compose-fem.yml --project-name fem up -d
+else
+	docker compose --file target/fem/docker-compose-fem.yml --project-name fem up -d
+endif
 
 stop: prepare-fem
+ifeq ($(LEGACY), true)
 	docker-compose --file target/fem/docker-compose-fem.yml --project-name fem down
+else
+	docker compose --file target/fem/docker-compose-fem.yml --project-name fem down
+endif
 
 clean:
 	@rm -rf target/fem
