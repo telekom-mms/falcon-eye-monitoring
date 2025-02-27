@@ -2,6 +2,10 @@ SHELL := /bin/bash
 
 .PHONY: clean prepare-fem-dbexporter-mongodb prepare-fem-dbexporter-postgresql config-mongodb config-postgresql
 
+ifndef $(LEGACY)
+LEGACY = false
+endif
+
 prepare-fem-dbexporter-mongodb:
 	@mkdir -p target/dbexporter
 	@cp -rn dbexporter/docker-compose-fem-dbexporter-mongodb.yml target/dbexporter
@@ -38,17 +42,33 @@ config-postgresql: prepare-fem-dbexporter-postgresql
 
 start-mongodb: prepare-fem-dbexporter-mongodb
 	@echo "Please ensure to call 'config-mongodb' before starting"
+ifeq ($(LEGACY), true)
 	docker-compose --file target/dbexporter/docker-compose-fem-dbexporter-mongodb.yml --project-name fem up -d
+else
+	docker compose --file target/dbexporter/docker-compose-fem-dbexporter-mongodb.yml --project-name fem up -d
+endif
 
 stop-mongodb: prepare-fem-dbexporter-mongodb
+ifeq ($(LEGACY), true)
 	docker-compose --file target/dbexporter/docker-compose-fem-dbexporter-mongodb.yml --project-name fem down
+else
+	docker compose --file target/dbexporter/docker-compose-fem-dbexporter-mongodb.yml --project-name fem down
+endif
 
 start-postgresql: prepare-fem-dbexporter-postgresql
 	@echo "Please ensure to call 'config-postgresql' before starting"
+ifeq ($(LEGACY), true)
 	docker-compose --file target/dbexporter/docker-compose-fem-dbexporter-postgresql.yml --project-name fem up -d
+else
+	docker compose --file target/dbexporter/docker-compose-fem-dbexporter-postgresql.yml --project-name fem up -d
+endif
 
 stop-postgresql: prepare-fem-dbexporter-postgresql
+ifeq ($(LEGACY), true)
 	docker-compose --file target/dbexporter/docker-compose-fem-dbexporter-postgresql.yml --project-name fem down
+else
+	docker compose --file target/dbexporter/docker-compose-fem-dbexporter-postgresql.yml --project-name fem down
+endif
 
 clean:
 	@rm -rf target/dbexporter
