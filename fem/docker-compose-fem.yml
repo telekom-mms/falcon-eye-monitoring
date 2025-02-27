@@ -6,6 +6,7 @@ networks:
 volumes:
   grafana_data:
   loki_data:
+  opensearch_config_data:
   opensearch_data:
   prometheus_data:
 
@@ -21,11 +22,11 @@ services:
     environment:
       - SPAN_STORAGE_TYPE=elasticsearch
     command: [
-        "--es.server-urls=http://fem-opensearch:9200",
-        "--es.num-shards=1",
-        "--es.num-replicas=0",
-        "--es.version=7",
-        "--log-level=info"
+      "--es.server-urls=http://fem-opensearch:9200",
+      "--es.num-shards=1",
+      "--es.num-replicas=0",
+      "--es.version=7",
+      "--log-level=info"
     ]
     networks:
       - monitoring
@@ -44,11 +45,11 @@ services:
     environment:
       - SPAN_STORAGE_TYPE=elasticsearch
     command: [
-        "--es.server-urls=http://fem-opensearch:9200",
-        "--es.num-shards=1",
-        "--es.num-replicas=0",
-        "--es.version=7",
-        "--log-level=info"
+      "--es.server-urls=http://fem-opensearch:9200",
+      "--es.num-shards=1",
+      "--es.num-replicas=0",
+      "--es.version=7",
+      "--log-level=info"
     ]
     networks:
       - monitoring
@@ -56,6 +57,7 @@ services:
       - fem_opensearch
   fem_opensearch:
     image: opensearchproject/opensearch:2.18.0
+    read_only: true
     cap_drop:
       - ALL
     restart: unless-stopped
@@ -81,6 +83,10 @@ services:
       - IPC_LOCK
     volumes:
       - opensearch_data:/usr/share/opensearch/data
+      - opensearch_config_data:/usr/share/opensearch/config
+    tmpfs:
+      - /tmp
+      - /usr/share/opensearch/logs:uid=1000,gid=1000
     networks:
       - monitoring
   fem_opensearch_exporter:
@@ -92,7 +98,7 @@ services:
     container_name: fem_opensearch_exporter
     hostname: fem-opensearch-exporter
     command:
-     - '--es.uri=http://fem-opensearch:9200'
+      - '--es.uri=http://fem-opensearch:9200'
     networks:
       - monitoring
     depends_on:
