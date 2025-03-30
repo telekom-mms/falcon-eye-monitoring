@@ -1,12 +1,10 @@
-import unittest
-
 import os
 import time
 
-from playwright.sync_api import Page, Playwright, expect
 import pytest
-from src.test.base import PreFlightCheck
+from playwright.sync_api import Page, Playwright, expect
 from src.pages import grafana
+from src.test.base import PreFlightCheck
 
 now = time.time()
 
@@ -53,7 +51,7 @@ def test_dashboard_contains_panel(playwright: Playwright) -> None:
     grafana.open_dashboard(page, "shellexporter")
 
     panel = page.get_by_test_id(f"data-testid Panel header bash_gauge.sh").get_by_role("heading",
-                                                                                         name="bash_gauge.sh")
+                                                                                       name="bash_gauge.sh")
     expect(panel).to_be_visible()
 
 
