@@ -6,9 +6,8 @@ from datetime import datetime
 import pytest
 from faker import Faker
 from playwright.sync_api import Page, Playwright, expect
-
-from src.test.base import PreFlightCheck
 from src.pages import demoapp
+from src.test.base import PreFlightCheck
 
 
 class Demoapp(PreFlightCheck):

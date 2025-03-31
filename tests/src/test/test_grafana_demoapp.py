@@ -1,12 +1,10 @@
-import unittest
-
 import os
 import time
 
-from playwright.sync_api import Page, Playwright, expect
 import pytest
-from src.test.base import PreFlightCheck
+from playwright.sync_api import Page, Playwright, expect
 from src.pages import grafana
+from src.test.base import PreFlightCheck
 
 now = time.time()
 
