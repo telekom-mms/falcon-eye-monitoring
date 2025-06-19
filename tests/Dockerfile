@@ -24,4 +24,4 @@ COPY --chown=$USER src/test/ /tests/src/test/
 
 WORKDIR /tests/
 
-CMD /home/$USER/.local/bin/uv run --active pytest --verbose src/test/test_demoapp.py src/test/test_grafana.py
+CMD /home/$USER/.local/bin/uv run --active pytest --verbose src/test/test_demoapp.py src/test/test_grafana_demoapp.py src/test/test_grafana_shellexporter.py

@@ -2,15 +2,27 @@ SHELL := /bin/bash
 
 .PHONY: clean prepare-fem-demoapp
 
+ifndef $(LEGACY)
+LEGACY = false
+endif
+
 prepare-fem-demoapp:
 	@mkdir -p target/demoapp
 	@cp -rn demoapp target/
 
 start: prepare-fem-demoapp
+ifeq ($(LEGACY), true)
 	docker-compose --file target/demoapp/docker-compose-fem-demoapp.yml --project-name fem up --build -d
+else
+	docker compose --file target/demoapp/docker-compose-fem-demoapp.yml --project-name fem up --build -d
+endif
 
 stop: prepare-fem-demoapp
+ifeq ($(LEGACY), true)
 	docker-compose --file target/demoapp/docker-compose-fem-demoapp.yml --project-name fem down
+else
+	docker compose --file target/demoapp/docker-compose-fem-demoapp.yml --project-name fem down
+endif
 
-clean:
+clean: stop
 	@rm -rf target/demoapp

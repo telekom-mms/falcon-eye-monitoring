@@ -13,6 +13,8 @@ RUN MAVEN_CONFIG= ./mvnw package
 
 EXPOSE 8080
 
+SHELL ["/bin/bash", "-c"]
+
 CMD java \
 -javaagent:/usr/local/opentelemetry/opentelemetry-javaagent.jar \
 -Dotel.exporter.otlp.endpoint=https://fem-otel-collector:4318 \

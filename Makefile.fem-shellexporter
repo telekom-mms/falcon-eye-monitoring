@@ -2,15 +2,27 @@ SHELL := /bin/bash
 
 .PHONY: clean prepare-fem-shellexporter
 
+ifndef $(LEGACY)
+LEGACY = false
+endif
+
 prepare-fem-shellexporter:
 	@mkdir -p target/shellexporter
 	@cp -rn shellexporter target
 
 start: prepare-fem-shellexporter
+ifeq ($(LEGACY), true)
 	docker-compose --file target/shellexporter/docker-compose-fem-shellexporter.yml --project-name fem up -d
+else
+	docker compose --file target/shellexporter/docker-compose-fem-shellexporter.yml --project-name fem up -d
+endif
 
 stop: prepare-fem-shellexporter
+ifeq ($(LEGACY), true)
 	docker-compose --file target/shellexporter/docker-compose-fem-shellexporter.yml --project-name fem down
+else
+	docker compose --file target/shellexporter/docker-compose-fem-shellexporter.yml --project-name fem down
+endif
 
-clean:
+clean: stop
 	@rm -rf target/shellexporter
