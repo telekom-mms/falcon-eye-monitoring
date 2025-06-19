@@ -1,20 +1,27 @@
-FROM mcr.microsoft.com/playwright:v1.46.0-jammy
+FROM mcr.microsoft.com/playwright:v1.53.0
 
 ENV HEADLESS=true
 
-COPY --chown=root:root pyproject.toml /
-COPY --chown=root:root poetry.lock /
+ENV USER=playwright
+ENV VIRTUAL_ENV=/home/$USER/venv
 
-RUN apt-get update && apt-get install --yes python3-poetry
-RUN poetry config virtualenvs.create false
-RUN poetry install
-RUN poetry run playwright install
+RUN adduser $USER --gecos $USER --disabled-password
 
-COPY --chown=root:root pytest.ini /tests/
-COPY --chown=root:root src/__init__.py /tests/src/
-COPY --chown=root:root src/pages/ /tests/src/pages/
-COPY --chown=root:root src/test/ /tests/src/test/
+USER $USER
+
+COPY --chown=$USER pyproject.toml /
+COPY --chown=$USER uv.lock /
+
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+
+RUN /home/$USER/.local/bin/uv sync --active --locked
+RUN /home/$USER/.local/bin/uv run --active playwright  install
+
+COPY --chown=$USER pytest.ini /tests/
+COPY --chown=$USER src/__init__.py /tests/src/
+COPY --chown=$USER src/pages/ /tests/src/pages/
+COPY --chown=$USER src/test/ /tests/src/test/
 
 WORKDIR /tests/
 
-CMD poetry run pytest --verbose src/test/test_demoapp.py src/test/test_grafana.py
+CMD /home/$USER/.local/bin/uv run --active pytest --verbose src/test/test_demoapp.py src/test/test_grafana.py
