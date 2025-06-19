@@ -17,4 +17,4 @@ COPY --chown=root:root src/test/ /tests/src/test/
 
 WORKDIR /tests/
 
-CMD poetry run pytest --verbose src/test/test_demoapp.py src/test/test_grafana.py
+CMD poetry run pytest --verbose src/test/test_demoapp.py src/test/test_grafana_demoapp.py src/test/test_grafana_shellexporter.py
