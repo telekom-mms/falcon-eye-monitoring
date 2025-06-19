@@ -1,5 +1,3 @@
-version: "3.8"
-
 networks:
   monitoring:
 
@@ -34,7 +32,7 @@ services:
     container_name: fem_jaeger_query
     hostname: fem-jaeger-query
     ports:
-      - "26686:16686" #ui, notls
+      - "26686:16686" # ui, notls
     environment:
       - SPAN_STORAGE_TYPE=elasticsearch
     command: [
@@ -104,7 +102,7 @@ services:
     container_name: fem_prometheus
     hostname: fem-prometheus
     ports:
-      - "29090:9090" #ui, notls
+      - "29090:9090" # ui, notls
     volumes:
       - prometheus_data:/prometheus
       - $PWD/target/fem/config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
@@ -118,7 +116,7 @@ services:
     container_name: fem_grafana
     hostname: fem-grafana
     ports:
-      - "23000:3000" #ui, notls
+      - "23000:3000" # ui, notls
     volumes:
       - grafana_data:/var/lib/grafana
       - $PWD/target/fem/config/grafana-dashboard-templates:/var/lib/grafana-dashboard-templates
@@ -143,7 +141,7 @@ services:
       - $PWD/target/fem/config/otel-collector-fem-config.yml:/etc/otel-collector-config.yml:ro
       - $PWD/target/fem/certs:/tmp/certs:ro
     ports:
-      - "24318:4318"  # grpc, tls
+      - "24318:4318" # grpc, tls
     networks:
       - monitoring
   fem_loki:
@@ -156,7 +154,7 @@ services:
       - loki_data:/tmp
       - $PWD/target/fem/config/loki-config.yml:/etc/loki/config.yml:ro
     ports:
-      - 23100:3100 #api, notls
+      - "23100:3100" # api, notls
     networks:
       - monitoring
   fem_traefik:

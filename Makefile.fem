@@ -39,5 +39,5 @@ else
 	docker compose --file target/fem/docker-compose-fem.yml --project-name fem down
 endif
 
-clean:
+clean: stop
 	@rm -rf target/fem

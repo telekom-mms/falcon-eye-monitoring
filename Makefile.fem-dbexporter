@@ -70,5 +70,5 @@ else
 	docker compose --file target/dbexporter/docker-compose-fem-dbexporter-postgresql.yml --project-name fem down
 endif
 
-clean:
+clean: stop-postgresql stop-mongodb
 	@rm -rf target/dbexporter

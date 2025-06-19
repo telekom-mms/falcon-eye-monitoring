@@ -1,5 +1,3 @@
-version: "3.8"
-
 networks:
   monitoring:
 
@@ -8,7 +6,7 @@ services:
     build:
       context: .
     image: fem_tests
-    restart: no
+    restart: 'no'
     container_name: fem_tests
     hostname: fem_tests
     networks:
