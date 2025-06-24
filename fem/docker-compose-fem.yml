@@ -4,23 +4,27 @@ networks:
 volumes:
   grafana_data:
   loki_data:
+  opensearch_config_data:
   opensearch_data:
   prometheus_data:
 
 services:
   fem_jaeger_collector:
     image: jaegertracing/jaeger-collector:1.63.0
+    read_only: true
+    cap_drop:
+      - ALL
     restart: unless-stopped
     container_name: fem_jaeger_collector
     hostname: fem-jaeger-collector
     environment:
       - SPAN_STORAGE_TYPE=elasticsearch
     command: [
-        "--es.server-urls=http://fem-opensearch:9200",
-        "--es.num-shards=1",
-        "--es.num-replicas=0",
-        "--es.version=7",
-        "--log-level=info"
+      "--es.server-urls=http://fem-opensearch:9200",
+      "--es.num-shards=1",
+      "--es.num-replicas=0",
+      "--es.version=7",
+      "--log-level=info"
     ]
     networks:
       - monitoring
@@ -28,6 +32,9 @@ services:
       - fem_opensearch
   fem_jaeger_query:
     image: jaegertracing/jaeger-query:1.63.0
+    read_only: true
+    cap_drop:
+      - ALL
     restart: unless-stopped
     container_name: fem_jaeger_query
     hostname: fem-jaeger-query
@@ -36,11 +43,11 @@ services:
     environment:
       - SPAN_STORAGE_TYPE=elasticsearch
     command: [
-        "--es.server-urls=http://fem-opensearch:9200",
-        "--es.num-shards=1",
-        "--es.num-replicas=0",
-        "--es.version=7",
-        "--log-level=info"
+      "--es.server-urls=http://fem-opensearch:9200",
+      "--es.num-shards=1",
+      "--es.num-replicas=0",
+      "--es.version=7",
+      "--log-level=info"
     ]
     networks:
       - monitoring
@@ -48,6 +55,9 @@ services:
       - fem_opensearch
   fem_opensearch:
     image: opensearchproject/opensearch:2.18.0
+    read_only: true
+    cap_drop:
+      - ALL
     restart: unless-stopped
     container_name: fem_opensearch
     hostname: fem-opensearch
@@ -71,21 +81,31 @@ services:
       - IPC_LOCK
     volumes:
       - opensearch_data:/usr/share/opensearch/data
+      - opensearch_config_data:/usr/share/opensearch/config
+    tmpfs:
+      - /tmp
+      - /usr/share/opensearch/logs:uid=1000,gid=1000
     networks:
       - monitoring
   fem_opensearch_exporter:
     image: prometheuscommunity/elasticsearch-exporter:v1.8.0
+    read_only: true
+    cap_drop:
+      - ALL
     restart: unless-stopped
     container_name: fem_opensearch_exporter
     hostname: fem-opensearch-exporter
     command:
-     - '--es.uri=http://fem-opensearch:9200'
+      - '--es.uri=http://fem-opensearch:9200'
     networks:
       - monitoring
     depends_on:
       - fem_opensearch
   fem_jaeger_es_cleaner:
     image: jaegertracing/jaeger-es-index-cleaner:1.63.0
+    read_only: true
+    cap_drop:
+      - ALL
     container_name: fem_jaeger_es_cleaner
     hostname: fem-opensearch-cleaner
     command: [
@@ -98,6 +118,9 @@ services:
       - fem_opensearch
   fem_prometheus:
     image: prom/prometheus:v2.55.1
+    read_only: true
+    cap_drop:
+      - ALL
     restart: unless-stopped
     container_name: fem_prometheus
     hostname: fem-prometheus
@@ -112,6 +135,9 @@ services:
       - fem_opensearch
   fem_grafana:
     image: grafana/grafana:11.3.1
+    read_only: true
+    cap_drop:
+      - ALL
     restart: unless-stopped
     container_name: fem_grafana
     hostname: fem-grafana
@@ -133,6 +159,9 @@ services:
       - "grafana.fem:127.0.0.1"
   fem_otel-collector:
     image: otel/opentelemetry-collector-contrib:0.114.0
+    read_only: true
+    cap_drop:
+      - ALL
     restart: unless-stopped
     container_name: fem_otel-collector
     hostname: fem-otel-collector
@@ -146,6 +175,9 @@ services:
       - monitoring
   fem_loki:
     image: grafana/loki:main
+    read_only: true
+    cap_drop:
+      - ALL
     restart: unless-stopped
     container_name: fem_loki
     hostname: fem-loki
@@ -159,6 +191,9 @@ services:
       - monitoring
   fem_traefik:
     image: traefik:v3.2.1
+    read_only: true
+    cap_drop:
+      - ALL
     restart: unless-stopped
     container_name: fem_traefik
     hostname: fem-traefik
