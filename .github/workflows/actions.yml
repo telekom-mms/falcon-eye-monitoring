@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: check out F.E.M. repository
-        uses: actions/checkout@latest
+        uses: actions/checkout@v4
       - name: start F.E.M.
         run: make --file Makefile.fem start
       - name: start demoapp
