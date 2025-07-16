@@ -99,6 +99,8 @@ def test_panel_data_trace_duration_list(playwright: Playwright) -> None:
 def test_panel_data_runtime_exception(playwright: Playwright) -> None:
     page = subject.setup(playwright)
 
+    time.sleep(30)
+
     grafana.open_dashboard(page, "demoapp")
 
     expect(page.get_by_test_id("data-testid Panel header runtime exceptions")
