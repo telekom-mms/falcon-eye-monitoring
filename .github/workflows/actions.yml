@@ -7,8 +7,9 @@ jobs:
       - name: check out F.E.M. repository
         uses: actions/checkout@v4
       - name: start F.E.M.
-        run: make --file Makefile.fem start
+        run: make --file Makefile.fem start && sleep 30s
       - name: start demoapp
-        run: make --file Makefile.fem-demoapp start
+        run: make --file Makefile.fem-demoapp start && sleep 60s
+        shell: bash
       - name: run tests
         run: make --file Makefile.fem-tests run
