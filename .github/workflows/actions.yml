@@ -1,0 +1,14 @@
+name: my-first-action
+on: push
+jobs:
+  test-the-stuff:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out F.E.M. repository
+      - uses: actions/checkout@latest
+      - name: start F.E.M.
+      - run: make --file Makefile.fem start
+      - name: start demoapp
+      - run: make --file Makefile.fem-demoapp start
+      - name: run tests
+      - run: make --file Makefile.fem-tests run
