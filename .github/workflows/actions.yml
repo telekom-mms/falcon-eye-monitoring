@@ -20,6 +20,4 @@ jobs:
         run: make --file Makefile.fem-tests run
       - name: set failure
         if: steps.tests.conclusion == 'failure' }}
-        with:
-          script: |
-            core.setFailed('Tests failed')
+        run: exit 1
