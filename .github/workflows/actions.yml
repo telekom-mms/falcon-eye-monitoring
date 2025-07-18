@@ -7,13 +7,19 @@ jobs:
       - name: check out F.E.M. repository
         uses: actions/checkout@v4
       - name: start F.E.M.
-        run: make --file Makefile.fem start && sleep 30s
+        run: make --file Makefile.fem start
         shell: bash
       - name: start demoapp
-        run: make --file Makefile.fem-demoapp start && sleep 60s
+        run: make --file Makefile.fem-demoapp start
         shell: bash
       - name: start shellexporter
-        run: make --file Makefile.fem-shellexporter start && sleep 30s
+        run: make --file Makefile.fem-shellexporter start
         shell: bash
       - name: run tests
+        id: tests
         run: make --file Makefile.fem-tests run
+      - name: set failure
+        if: steps.tests.conclusion == 'failure' }}
+        with:
+          script: |
+            core.setFailed('Tests failed')
