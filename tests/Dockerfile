@@ -14,7 +14,8 @@ COPY --chown=root:root pytest.ini /tests/
 COPY --chown=root:root src/__init__.py /tests/src/
 COPY --chown=root:root src/pages/ /tests/src/pages/
 COPY --chown=root:root src/test/ /tests/src/test/
+COPY --chown=root:root src/tests.sh /tests/
 
 WORKDIR /tests/
 
-CMD /tests/src/test/tests.sh
+CMD ["bash", "./tests.sh"]
