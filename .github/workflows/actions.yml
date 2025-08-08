@@ -19,5 +19,5 @@ jobs:
         id: tests
         run: make --file Makefile.fem-tests run
       - name: set failure
-        if: steps.tests.conclusion == 'failure' }}
+        if: steps.tests.conclusion == 'failure'
         run: exit 1
