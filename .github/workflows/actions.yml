@@ -1,5 +1,5 @@
 name: test-action
-on: push
+on: pull_request
 jobs:
   test-fem-basic:
     runs-on: ubuntu-latest
