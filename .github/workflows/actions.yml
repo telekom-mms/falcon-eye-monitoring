@@ -1,5 +1,7 @@
 name: test-action
-on: pull_request
+on:
+  pull_request:
+    types: [opened, reopened, edited]
 jobs:
   test-fem-basic:
     runs-on: ubuntu-latest
