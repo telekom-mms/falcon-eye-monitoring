@@ -9,6 +9,8 @@ datasources:
     url: http://fem-prometheus:9090
     editable: true
     uid: "PBFA97CFB590B2093"
+    jsonData:
+      timeInterval: "5s"
   - name: Jaeger
     type: jaeger
     url: http://fem-jaeger-query:16686

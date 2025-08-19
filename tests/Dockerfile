@@ -17,11 +17,12 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 RUN /home/$USER/.local/bin/uv sync --active --locked
 RUN /home/$USER/.local/bin/uv run --active playwright  install
 
-COPY --chown=$USER pytest.ini /tests/
-COPY --chown=$USER src/__init__.py /tests/src/
-COPY --chown=$USER src/pages/ /tests/src/pages/
-COPY --chown=$USER src/test/ /tests/src/test/
+COPY --chown=root:root pytest.ini /tests/
+COPY --chown=root:root src/__init__.py /tests/src/
+COPY --chown=root:root src/pages/ /tests/src/pages/
+COPY --chown=root:root src/test/ /tests/src/test/
+COPY --chown=root:root src/tests.sh /tests/
 
 WORKDIR /tests/
 
-CMD /home/$USER/.local/bin/uv run --active pytest --verbose src/test/test_demoapp.py src/test/test_grafana_demoapp.py src/test/test_grafana_shellexporter.py
+CMD ["bash", "./tests.sh"]

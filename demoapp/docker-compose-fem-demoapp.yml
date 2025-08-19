@@ -6,6 +6,9 @@ services:
     build:
       context: .
     image: fem-demoapp
+    read_only: true
+    cap_drop:
+      - ALL
     restart: unless-stopped
     container_name: fem_demoapp
     hostname: fem-demoapp
@@ -14,6 +17,8 @@ services:
     networks:
       - monitoring
     volumes:
+      - type: tmpfs
+        target: /tmp
       - $PWD/target/fem/certs:/tmp/certs:ro
     labels:
       - "traefik.enable=true"

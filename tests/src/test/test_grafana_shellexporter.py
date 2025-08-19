@@ -62,4 +62,6 @@ def test_panel(playwright: Playwright) -> None:
     grafana.open_dashboard(page, "shellexporter")
 
     for i in range(1, 9):
-        expect(page.get_by_text(f"for_{i}", exact=True)).to_be_visible()
+        locator = page.get_by_text(f"for_{i}", exact=True)
+        locator.wait_for(timeout=60000, state="visible")
+        expect(locator).to_be_visible()

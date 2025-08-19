@@ -1,0 +1,40 @@
+name: test-action
+on:
+  pull_request:
+    types: [opened, reopened, edited]
+jobs:
+  test-fem-basic:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out F.E.M. repository
+        uses: actions/checkout@v4
+      - name: start F.E.M.
+        run: make --file Makefile.fem start
+        shell: bash
+      - name: start demoapp
+        run: make --file Makefile.fem-demoapp start
+        shell: bash
+      - name: start shellexporter
+        run: make --file Makefile.fem-shellexporter start
+        shell: bash
+      - name: run tests
+        id: tests
+        run: |
+          make --file Makefile.fem-tests run 2>&1 | tee fem_tests.out
+      - name: copy fem_tests results
+        uses: actions/upload-artifact@v4
+        with:
+          name: fem_tests.out
+          path: fem_tests.out
+
+  analyze_test_results:
+    needs: test-fem-basic
+    runs-on: ubuntu-latest
+    steps:
+      - name: download fem_test results
+        uses: actions/download-artifact@v4
+        with:
+          name: fem_tests.out
+      - name: check tests results
+        run: if [ `grep "exited with code 1" fem_tests.out -c` -gt "0" ]; then grep "fem_tests" fem_tests.out && exit 1; else exit 0; fi
+        shell: bash
