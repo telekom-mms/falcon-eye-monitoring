@@ -1,21 +1,29 @@
-FROM mcr.microsoft.com/playwright:v1.46.0-jammy
+FROM mcr.microsoft.com/playwright:v1.53.0
 
 ENV HEADLESS=true
 
-COPY --chown=root:root pyproject.toml /
-COPY --chown=root:root poetry.lock /
+ENV USER=playwright
+ENV UV_HOME=/opt/uv
 
-RUN apt-get update && apt-get install --yes python3-poetry
-RUN poetry config virtualenvs.create false
-RUN poetry install
-RUN poetry run playwright install
+RUN adduser $USER --gecos $USER --disabled-password
+RUN mkdir $UV_HOME && chown $USER $UV_HOME
 
-COPY --chown=root:root pytest.ini /tests/
-COPY --chown=root:root src/__init__.py /tests/src/
-COPY --chown=root:root src/pages/ /tests/src/pages/
-COPY --chown=root:root src/test/ /tests/src/test/
-COPY --chown=root:root src/tests.sh /tests/
+COPY --chown=$USER pyproject.toml /
+COPY --chown=$USER uv.lock /
+
+RUN curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="$UV_HOME" sh
+
+RUN $UV_HOME/uv sync --active --locked
+RUN $UV_HOME/uv run --active playwright  install
+
+USER $USER
+
+COPY --chown=$USER pytest.ini /tests/
+COPY --chown=$USER src/__init__.py /tests/src/
+COPY --chown=$USER src/pages/ /tests/src/pages/
+COPY --chown=$USER src/test/ /tests/src/test/
+COPY --chown=$USER src/tests.sh /tests/
 
 WORKDIR /tests/
 
-CMD ["bash", "./tests.sh"]
+CMD ["/bin/bash", "./tests.sh"]
