@@ -1,0 +1,65 @@
+@startuml
+!theme blueprint
+top to bottom direction
+
+node "application-host" {
+
+  component Petclinic {
+    [Otel Agent]
+  }
+}
+
+node "monitoring-host" {
+
+  [Filesystem]
+
+  package "otel" {
+
+      package "exporter" {
+        [Otel Collector]
+        [Otel Collector] --> [Jaeger Exporter]
+        [Otel Collector] --> [Loki Exporter]
+        [Otel Collector] --> [Prometheus Exporter]
+      }
+
+      package "traces" {
+        [Opensearch] ... [Filesystem]
+        [Jaeger Exporter] ---> [Jaeger Collector]
+        [Jaeger Collector] --> Opensearch
+        [Jaeger Query] --> Opensearch
+      }
+
+      package "logs" {
+        [Loki Exporter] ---> [Loki]
+        [Loki] ... [Filesystem]
+      }
+
+      package "metrics" {
+        [Prometheus Exporter] ---> [Prometheus]
+        [Prometheus] ... [Filesystem]
+      }
+
+    [Otel Agent] --> [Otel Collector]   : TLS
+
+    }
+
+  package "grafana" {
+    [Grafana] --> [Prometheus]
+    [Grafana] --> [Jaeger Query]
+    [Grafana] --> [Loki]
+    [Grafana] .. [Filesystem]
+  }
+
+  package "revproxy" {
+    [Traefik] --> Grafana
+    [Traefik]
+  }
+}
+
+node "user-host" {
+  [Browser] ---> Traefik   : TLS
+}
+
+[Browser] -> [Petclinic] : TLS
+
+@enduml
