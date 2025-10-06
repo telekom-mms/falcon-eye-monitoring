@@ -1,4 +1,4 @@
-![context-logo](readme/logo-fem02.png)
+![context-logo](readme/logo-fem02_dark.png)
 
 # F.E.M. : Falcon Eye Monitoring
 Like a falcon, everything in sight! F.E.M. brings it all together: logfile, traces, metrics.
@@ -25,7 +25,7 @@ In this case you have to use `make` with parameter `LEGACY=true`.
 
 The following diagram illustrates the container setup using Jaeger-Tracing using an Opensearch backend.
 
-![context-jaeger-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/T-Systems-MMS/falcon-eye-monitoring/main/readme/context-fem.iuml)
+![context-jaeger-uml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Telekom-MMS/falcon-eye-monitoring/main/readme/context-fem_dark.iuml)
 
 #### Interfaces
 
