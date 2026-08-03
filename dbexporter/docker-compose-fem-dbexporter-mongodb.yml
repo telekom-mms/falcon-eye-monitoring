@@ -3,7 +3,7 @@ networks:
 
 services:
   fem_mongodb_exporter:
-    image: percona/mongodb_exporter:2.37.0
+    image: percona/mongodb_exporter:2.44.0
     restart: unless-stopped
     container_name: fem_mongodb_exporter
     hostname: fem-mongodb-exporter
