@@ -10,7 +10,7 @@ volumes:
 
 services:
   fem_jaeger_collector:
-    image: jaegertracing/jaeger-collector:1.64.0
+    image: jaegertracing/jaeger-collector:1.76.0
     read_only: true
     cap_drop:
       - ALL
@@ -30,7 +30,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_jaeger_query:
-    image: jaegertracing/jaeger-query:1.64.0
+    image: jaegertracing/jaeger-query:1.76.0
     read_only: true
     cap_drop:
       - ALL
@@ -86,7 +86,7 @@ services:
     networks:
       - monitoring
   fem_opensearch_exporter:
-    image: prometheuscommunity/elasticsearch-exporter:v1.9.0
+    image: prometheuscommunity/elasticsearch-exporter:v1.11.0
     read_only: true
     cap_drop:
       - ALL
@@ -100,7 +100,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_jaeger_es_cleaner:
-    image: jaegertracing/jaeger-opensearch-index-cleaner:1.64.0
+    image: jaegertracing/jaeger-es-index-cleaner:2.20.0
     read_only: true
     cap_drop:
       - ALL
@@ -115,7 +115,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_prometheus:
-    image: prom/prometheus:v2.56.0
+    image: prom/prometheus:v3.13.2
     read_only: true
     cap_drop:
       - ALL
@@ -132,7 +132,7 @@ services:
     depends_on:
       - fem_opensearch
   fem_grafana:
-    image: grafana/grafana:11.4.0
+    image: grafana/grafana:12.4.6
     read_only: true
     cap_drop:
       - ALL
@@ -156,7 +156,7 @@ services:
     extra_hosts:
       - "grafana.fem:127.0.0.1"
   fem_otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.115.0
+    image: otel/opentelemetry-collector-contrib:0.157.0
     read_only: true
     cap_drop:
       - ALL
@@ -172,7 +172,7 @@ services:
     networks:
       - monitoring
   fem_loki:
-    image: grafana/loki:3.2.1
+    image: grafana/loki:main-4004afe
     read_only: true
     cap_drop:
       - ALL
@@ -188,7 +188,7 @@ services:
     networks:
       - monitoring
   fem_traefik:
-    image: traefik:v3.3.0
+    image: traefik:v3.7.10
     read_only: true
     cap_drop:
       - ALL
